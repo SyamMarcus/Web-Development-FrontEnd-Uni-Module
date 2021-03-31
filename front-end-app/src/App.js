@@ -1,11 +1,26 @@
-import logo from './logo.svg';
+import { Layout } from 'antd';
 import './App.css';
+
+import Nav from './components/nav';
+import Home from './components/home';
+
+const { Header, Content, Footer } = Layout;
 
 function App() {
   return (
-    <div className="App">
-      Hello version 0.1.1
-    </div>
+    <Layout className="layout">
+      
+      <Header>
+        <Nav />
+      </Header>
+      
+      <Content>
+        <Home />
+      </Content>
+
+      <Footer style={{ textAlign: 'center' }}>The Canine Shelter</Footer>
+
+    </Layout>
   );
 }
 
