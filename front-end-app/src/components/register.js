@@ -32,8 +32,8 @@ const confirmRules = [
   })
 ];
   
-const usernameRules = [  
-  { required: true, message: 'Please input your username!', whitespace: true }
+const userNameRules = [  
+  { required: true, message: 'Please input your userName!', whitespace: true }
 ];
 
 class RegistrationForm extends React.Component {
@@ -45,8 +45,28 @@ class RegistrationForm extends React.Component {
     this.onFinish = this.onFinish.bind(this);
   }
 
-  onFinish(x) {
-    console.log(x);
+  onFinish = (values) => {
+    console.log('Received values of form: ', values);
+    const { confirm, ...data } = values;
+    fetch('http://localhost:3030/TCS/register/', {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+    
+    .then(status)
+    .then(json)
+    .then(data => {
+      console.log(data);
+      alert("User added")
+    })
+    
+    .catch(errorResponse => {
+      console.error(errorResponse);
+      alert(`Error: ${errorResponse}`);
+    });  
   };
 
   render() {
@@ -65,7 +85,7 @@ class RegistrationForm extends React.Component {
           <Input.Password />      
         </Form.Item>
       
-        <Form.Item name="userName" label="Username" rules={usernameRules}>      
+        <Form.Item name="userName" label="userName" rules={userNameRules}>      
           <Input />
         </Form.Item>
       
@@ -78,5 +98,21 @@ class RegistrationForm extends React.Component {
     );
   };
 };
+
+function status(response) {
+
+  if (response.status >= 200 && response.status < 300) {
+    console.log("status err")
+    return response;
+  } else {
+    return new Promise((resolve, reject) => {
+      return reject(response);
+    });
+  }
+}
+
+function json(response) {
+  return response.json();
+}
 
 export default RegistrationForm;
