@@ -9,6 +9,8 @@ import {
 
 import Nav from './components/nav';
 import Account from './components/account';
+import Register from './components/register';
+import Login from './components/login';
 import Home from './components/home';
 import Post from './components/post';
 
@@ -25,6 +27,8 @@ function App() {
         <Content>
           <Switch>
             <Route path="/account" children={<Account />} />
+            <Route path="/register" children={<Register />} />
+            <Route path="/login" children={<Login />} />
             <Route path="/post/:id" children={<Post />} />
             <Route path="/" children={<Home />} exact />
           </Switch>
