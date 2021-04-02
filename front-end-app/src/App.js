@@ -13,6 +13,8 @@ import Register from './components/register';
 import Login from './components/login';
 import Home from './components/home';
 import Post from './components/post';
+import Publish from './components/publish';
+
 
 const { Header, Content, Footer } = Layout;
 
@@ -29,6 +31,7 @@ function App() {
             <Route path="/account" children={<Account />} />
             <Route path="/register" children={<Register />} />
             <Route path="/login" children={<Login />} />
+            <Route path="/publish" children={<Publish />} />
             <Route path="/post/:id" children={<Post />} />
             <Route path="/" children={<Home />} exact />
           </Switch>
