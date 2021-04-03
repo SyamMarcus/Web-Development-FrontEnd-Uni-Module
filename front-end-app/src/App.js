@@ -14,6 +14,7 @@ import Login from './components/login';
 import Home from './components/home';
 import Post from './components/post';
 import Publish from './components/publish';
+import Editpost from './components/editpost';
 
 
 const { Header, Content, Footer } = Layout;
@@ -32,6 +33,7 @@ function App() {
             <Route path="/register" children={<Register />} />
             <Route path="/login" children={<Login />} />
             <Route path="/publish" children={<Publish />} />
+            <Route path="/editpost/:id" children={<Editpost />} />
             <Route path="/post/:id" children={<Post />} />
             <Route path="/" children={<Home />} exact />
           </Switch>

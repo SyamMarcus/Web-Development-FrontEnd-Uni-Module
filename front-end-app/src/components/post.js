@@ -1,6 +1,7 @@
 import React from 'react'; 
 import { withRouter } from 'react-router';
-import { Image, Row, Col, Typography } from 'antd'
+import { Link } from "react-router-dom";
+import { Image, Row, Col, Typography, Button } from 'antd'
 
 const { Title, Paragraph } = Typography;
 
@@ -28,10 +29,12 @@ class Post extends React.Component {
   }
 
   render() {
+    // if(user.id != post.authorID) { //return without button }
     if (!this.state.post) {
       return <h3>Loading post...</h3>
     }
     const post = this.state.post;
+    const editpath = '/editpost/' + this.props.match.params.id;
 
     return (
       <div>
@@ -43,6 +46,7 @@ class Post extends React.Component {
             <Title>{post.title}</Title>
             <Paragraph>{post.breed}</Paragraph>
             <Paragraph>{post.summary}</Paragraph>
+            <Button type="primary"><Link to={editpath}>Edit Post</Link></Button>
           </Col>
         </Row>
       </div>
