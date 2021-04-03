@@ -29,7 +29,7 @@ class RegistrationForm extends React.Component {
     console.log('Received values of form: ', values);
     const { confirm, ...data } = values;
     fetch(`http://localhost:3030/TCS/listings/${id}`, {
-      method: "POST",
+      method: "PUT",
       body: JSON.stringify(data),
       headers: {
         "Content-Type": "application/json"
@@ -40,12 +40,11 @@ class RegistrationForm extends React.Component {
     .then(json)
     .then(data => {
       console.log(data);
-      alert("Listing Updates")
+      alert("Listing Updated")
     })
     
     .catch(errorResponse => {
       console.error(errorResponse);
-      alert(`Error: ${errorResponse}`);
     });  
   };
   
@@ -58,9 +57,7 @@ class RegistrationForm extends React.Component {
         'Content-Type':'application/json'
       }
       })
-    } else {
-      // cancel clicked
-    }
+    } 
   }
 
   render() {
