@@ -1,5 +1,6 @@
 import React from 'react';
 import { Form, Input, Button } from 'antd';
+import UserContext from '../contexts/user';
 
 const formItemLayout = {
   labelCol: { xs: { span: 24 }, sm: { span: 6 } },
@@ -35,7 +36,10 @@ class RegistrationForm extends React.Component {
     this.onFinish = this.onFinish.bind(this);
   }
 
+  static contextType = UserContext;
+
   onFinish = (values) => {
+    values.authorID = this.context.user.ID
     console.log('Received values of form: ', values);
     const { confirm, ...data } = values;
     if(window.confirm('Confirm Creation?')) {
@@ -62,6 +66,13 @@ class RegistrationForm extends React.Component {
   }
 
   render() {
+    
+    if(this.context.user.loggedIn === false) {
+      return (
+          <p>Please Login</p>
+      );
+    }
+
     return (
       <Form {...formItemLayout} name="publish" onFinish={this.onFinish} validateMessages={validateMessages} scrollToFirstError>
       

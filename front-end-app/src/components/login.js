@@ -1,5 +1,6 @@
 import React from 'react';
-import { Form, Input, Button } from 'antd';
+import { Form, Input, Button, Checkbox } from 'antd';
+import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import UserContext from '../contexts/user';
 
 const formItemLayout = {
@@ -10,14 +11,6 @@ const formItemLayout = {
 const tailFormItemLayout = {
   wrapperCol: { xs: { span: 24, offset: 0 }, sm: { span: 16, offset: 6 } },
 };
-
-const passwordRules = [
-  { required: true, message: 'Please input your password!' }
-];
-
-const usernameRules = [
-  { required: true, message: 'Please input your username!', whitespace: true }
-]
 
 
 class LoginForm extends React.Component {
@@ -41,7 +34,6 @@ class LoginForm extends React.Component {
     .then(json)
     .then(user => {
       alert("User Logged In")
-      console.log(user);
       this.context.login(user);
     })
     .catch(errorResponse => {
@@ -52,21 +44,44 @@ class LoginForm extends React.Component {
 
   render() {
     return (
-      <Form {...formItemLayout} name="login" onFinish={this.login} scrollToFirstError >
-        <Form.Item name="username" label="Username" rules={usernameRules} >
-          <Input />
+      <Form {...formItemLayout}
+        name="normal_login"
+        className="login-form"
+        scrollToFirstError
+        initialValues={{ remember: true }}
+        onFinish={this.login}
+      >
+        <Form.Item 
+          name="username"
+          rules={[{ required: true, message: 'Please input your Username!' }]}
+        >
+          <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username" />
         </Form.Item>
-        <Form.Item name="password" label="Password" rules={passwordRules} hasFeedback >
-          <Input.Password />
+        <Form.Item
+          name="password"
+          rules={[{ required: true, message: 'Please input your Password!' }]}
+        >
+          <Input
+            prefix={<LockOutlined className="site-form-item-icon" />}
+            type="password"
+            placeholder="Password"
+          />
         </Form.Item>
+        <Form.Item>
+          <Form.Item name="remember" valuePropName="checked" noStyle>
+            <Checkbox>Remember me</Checkbox>
+          </Form.Item>
+        </Form.Item>
+  
         <Form.Item {...tailFormItemLayout}>
-          <Button type="primary" htmlType="submit">
-            Login
+          <Button type="primary" htmlType="submit" className="login-form-button">
+            Log in
           </Button>
+          Or <a href="/register">register now!</a>
         </Form.Item>
       </Form>
     );
-  };    
+  };
 };
 
 function status(response) {

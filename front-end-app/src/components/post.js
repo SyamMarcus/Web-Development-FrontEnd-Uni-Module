@@ -2,6 +2,7 @@ import React from 'react';
 import { withRouter } from 'react-router';
 import { Link } from "react-router-dom";
 import { Image, Row, Col, Typography, Button } from 'antd'
+import UserContext from '../contexts/user';
 
 const { Title, Paragraph } = Typography;
 
@@ -14,6 +15,8 @@ class Post extends React.Component {
     }
   }
 
+  static contextType = UserContext;
+
   componentDidMount() {
     const id = this.props.match.params.id;
 
@@ -21,6 +24,7 @@ class Post extends React.Component {
     .then(status)
     .then(json)
     .then(post => {
+      console.log(post)
       this.setState({post:post})
     })
     .catch(err => {
@@ -34,25 +38,40 @@ class Post extends React.Component {
       return <h3>Loading post...</h3>
     }
     const post = this.state.post;
-    const editpath = '/editpost/' + this.props.match.params.id;
+
+    if (this.context.user.ID === this.state.post.authorID) {
+      return (
+        <div>
+          <Row type="flex" justify="space-around" align="middle">
+            <Col span={6} align="center">
+              <Image width={200} alt="Listing Image" src={post.imageURL} />
+            </Col>
+            <Col span={12}>
+              <Title>{post.title}</Title>
+              <Paragraph>{post.breed}</Paragraph>
+              <Paragraph>{post.summary}</Paragraph>
+              <Button type="primary"><Link to={'/editpost/' + this.state.post.ID}>Edit Post</Link></Button>
+            </Col>
+          </Row>
+        </div>
+      );
+    }
 
     return (
       <div>
-        <Row type="flex" justify="space-around" align="middle">
-          <Col span={6} align="center">
-            <Image width={200} alt="Listing Image" src={post.imageURL} />
-          </Col>
-          <Col span={12}>
-            <Title>{post.title}</Title>
-            <Paragraph>{post.breed}</Paragraph>
-            <Paragraph>{post.summary}</Paragraph>
-            <Button type="primary"><Link to={editpath}>Edit Post</Link></Button>
-          </Col>
-        </Row>
-      </div>
+      <Row type="flex" justify="space-around" align="middle">
+        <Col span={6} align="center">
+          <Image width={200} alt="Listing Image" src={post.imageURL} />
+        </Col>
+        <Col span={12}>
+          <Title>{post.title}</Title>
+          <Paragraph>{post.breed}</Paragraph>
+          <Paragraph>{post.summary}</Paragraph>
+        </Col>
+      </Row>
+    </div>
     );
   }
-
 }
 
 function status(response) {
