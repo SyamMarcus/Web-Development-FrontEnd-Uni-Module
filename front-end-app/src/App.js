@@ -1,5 +1,7 @@
+import React from 'react';
 import { Layout } from 'antd';
 import './App.css';
+import UserContext from './contexts/user';
 
 import {
   BrowserRouter as Router,
@@ -19,30 +21,62 @@ import Editpost from './components/editpost';
 
 const { Header, Content, Footer } = Layout;
 
-function App() {
-  return (
-    <Layout className="layout">
-      <Router>
-        <Header>
-          <Nav />
-        </Header>
-        
-        <Content>
-          <Switch>
-            <Route path="/account" children={<Account />} />
-            <Route path="/register" children={<Register />} />
-            <Route path="/login" children={<Login />} />
-            <Route path="/publish" children={<Publish />} />
-            <Route path="/editpost/:id" children={<Editpost />} />
-            <Route path="/post/:id" children={<Post />} />
-            <Route path="/" children={<Home />} exact />
-          </Switch>
-        </Content>
+class App extends React.Component {
+  constructor(props) {
+    super(props);  
+    this.state = {
+      user: {loggedIn: false}
+    }
+    
+    this.login = this.login.bind(this);
+    this.logout = this.logout.bind(this);
+  }
 
-        <Footer style={{ textAlign: 'center' }}>The Canine Shelter</Footer>
-      </Router>
-    </Layout>
-  );
+  login(user) {
+    console.log("User is now being set on the context");
+    user.loggedIn = true;
+    this.setState({user:user});
+  }
+
+  logout() {
+    console.log("Removing user from the app context");
+    this.setState({user: {loggedIn:false}});
+  }
+
+  render() {
+    
+    const context = {
+      user: this.state.user,
+      login: this.login,
+      logout: this.logout
+      };
+
+    return (
+      <Layout className="layout">
+        <UserContext.Provider value={context}>
+          <Router>
+            <Header>
+              <Nav />
+            </Header>
+            
+            <Content>
+              <Switch>
+                <Route path="/account" children={<Account />} />
+                <Route path="/register" children={<Register />} />
+                <Route path="/login" children={<Login />} />
+                <Route path="/publish" children={<Publish />} />
+                <Route path="/editpost/:id" children={<Editpost />} />
+                <Route path="/post/:id" children={<Post />} />
+                <Route path="/" children={<Home />} exact />
+              </Switch>
+            </Content>
+
+            <Footer style={{ textAlign: 'center' }}>The Canine Shelter</Footer>
+          </Router>
+        </UserContext.Provider>
+      </Layout>
+    );
+  }
 }
 
 export default App;
