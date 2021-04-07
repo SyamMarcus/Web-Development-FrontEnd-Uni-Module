@@ -3,6 +3,7 @@ import { withRouter } from 'react-router';
 import { Link } from "react-router-dom";
 import { Image, Row, Col, Typography, Button } from 'antd'
 import UserContext from '../contexts/user';
+import { status, json } from '../utilities/requestHandlers';
 
 const { Title, Paragraph } = Typography;
 
@@ -74,20 +75,5 @@ class Post extends React.Component {
   }
 }
 
-function status(response) {
-
-  if (response.status >= 200 && response.status < 300) {
-    console.log("status err")
-    return response;
-  } else {
-    return new Promise((resolve, reject) => {
-      return reject(response);
-    });
-  }
-}
-
-function json(response) {
-  return response.json();
-}
 
 export default withRouter(Post);

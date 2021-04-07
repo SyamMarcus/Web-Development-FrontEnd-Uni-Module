@@ -1,6 +1,7 @@
 import React from 'react';
 import { Form, Input, Button } from 'antd';
 import UserContext from '../contexts/user';
+import { status, json } from '../utilities/requestHandlers';
 
 const formItemLayout = {
   labelCol: { xs: { span: 24 }, sm: { span: 6 } },
@@ -102,20 +103,5 @@ class RegistrationForm extends React.Component {
   };
 };
 
-function status(response) {
-
-  if (response.status >= 200 && response.status < 300) {
-    console.log("status err")
-    return response;
-  } else {
-    return new Promise((resolve, reject) => {
-      return reject(response);
-    });
-  }
-}
-
-function json(response) {
-  return response.json();
-}
 
 export default RegistrationForm;

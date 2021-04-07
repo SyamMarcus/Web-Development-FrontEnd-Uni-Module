@@ -2,6 +2,7 @@ import React from 'react';
 import { Form, Input, Button, Checkbox } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import UserContext from '../contexts/user';
+import { status, json } from '../utilities/requestHandlers';
 
 const formItemLayout = {
   labelCol: { xs: { span: 24 }, sm: { span: 6 } },
@@ -83,21 +84,5 @@ class LoginForm extends React.Component {
     );
   };
 };
-
-function status(response) {
-
-  if (response.status >= 200 && response.status < 300) {
-    console.log("status err")
-    return response;
-  } else {
-    return new Promise((resolve, reject) => {
-      return reject(response);
-    });
-  }
-}
-
-function json(response) {
-  return response.json();
-}
 
 export default LoginForm;
