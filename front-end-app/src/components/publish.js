@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Input, Button } from 'antd';
+import { PageHeader, Form, Input, Button } from 'antd';
 import UserContext from '../contexts/user';
 import { status, json } from '../utilities/requestHandlers';
 
@@ -75,30 +75,37 @@ class RegistrationForm extends React.Component {
     }
 
     return (
-      <Form {...formItemLayout} name="publish" onFinish={this.onFinish} validateMessages={validateMessages} scrollToFirstError>
-      
-        <Form.Item name="title" label="Listing Title" rules={[{ required: true }]}>     
-          <Input placeholder="title"/>      
-        </Form.Item>
-      
-        <Form.Item name="breed" label="Dog Breed" rules={[{ required: true }]}>     
-          <Input />   
-        </Form.Item>
-      
-        <Form.Item {...formSummaryLayout} name="summary" label="Summary" >      
-          <Input.TextArea placeholder="summary"/>   
-        </Form.Item>
-      
-        <Form.Item name="imageURL" label="Image URL?" >      
-          <Input placeholder="imageURL"/>
-        </Form.Item>
-      
-        <Form.Item {...tailFormItemLayout}>     
-          <Button type="primary" htmlType="submit">     
-            Publish    
-          </Button>    
-        </Form.Item >
-      </Form>     
+      <div className="site-layout-content">
+        <div style={{ padding: '2% 25%' }}>
+          <PageHeader className="site-page-header"
+            title="Publish Listing"
+            subTitle="This is where you can publish a new dog listing."/>
+            </div>  
+        <Form {...formItemLayout} name="publish" onFinish={this.onFinish} validateMessages={validateMessages} scrollToFirstError>
+        
+          <Form.Item name="title" label="Listing Title" rules={[{ required: true }]}>     
+            <Input placeholder="title"/>      
+          </Form.Item>
+        
+          <Form.Item name="breed" label="Dog Breed" rules={[{ required: true }]}>     
+            <Input />   
+          </Form.Item>
+        
+          <Form.Item {...formSummaryLayout} name="summary" label="Summary" >      
+            <Input.TextArea placeholder="summary"/>   
+          </Form.Item>
+        
+          <Form.Item name="imageURL" label="Image URL?" >      
+            <Input placeholder="imageURL"/>
+          </Form.Item>
+        
+          <Form.Item {...tailFormItemLayout}>     
+            <Button type="primary" htmlType="submit">     
+              Publish    
+            </Button>    
+          </Form.Item >
+        </Form>     
+      </div>
     );
   };
 };

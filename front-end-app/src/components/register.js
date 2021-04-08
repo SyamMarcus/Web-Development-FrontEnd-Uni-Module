@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Input, Button } from 'antd';
+import { PageHeader, Form, Input, Button } from 'antd';
 import { status, json } from '../utilities/requestHandlers';
 
 const formItemLayout = {
@@ -72,30 +72,37 @@ class RegistrationForm extends React.Component {
 
   render() {
     return (
-      <Form {...formItemLayout} name="register" onFinish={this.onFinish} scrollToFirstError>
-      
-        <Form.Item name="email" label="E-mail" rules={emailRules}>     
-          <Input />      
-        </Form.Item>
-      
-        <Form.Item name="password" label="Password" hasFeedback rules={passwordRules}>     
-          <Input.Password />     
-        </Form.Item>
-      
-        <Form.Item name="confirm" label="Confirm Password" rules={confirmRules}>      
-          <Input.Password />      
-        </Form.Item>
-      
-        <Form.Item name="userName" label="userName" rules={userNameRules}>      
-          <Input />
-        </Form.Item>
-      
-        <Form.Item {...tailFormItemLayout}>     
-          <Button type="primary" htmlType="submit">     
-            Register     
-          </Button>    
-        </Form.Item >
-      </Form>     
+      <div className="site-layout-content">
+        <div style={{ padding: '2% 25%' }}>
+          <PageHeader className="site-page-header"
+            title="Register Page"
+            subTitle="This is where you can register a new account."/>
+            </div>  
+        <Form {...formItemLayout} name="register" onFinish={this.onFinish} scrollToFirstError>
+        
+          <Form.Item name="email" label="E-mail" rules={emailRules}>     
+            <Input />      
+          </Form.Item>
+        
+          <Form.Item name="password" label="Password" hasFeedback rules={passwordRules}>     
+            <Input.Password />     
+          </Form.Item>
+        
+          <Form.Item name="confirm" label="Confirm Password" rules={confirmRules}>      
+            <Input.Password />      
+          </Form.Item>
+        
+          <Form.Item name="userName" label="userName" rules={userNameRules}>      
+            <Input />
+          </Form.Item>
+        
+          <Form.Item {...tailFormItemLayout}>     
+            <Button type="primary" htmlType="submit">     
+              Register     
+            </Button>    
+          </Form.Item >
+        </Form>     
+      </div>
     );
   };
 };

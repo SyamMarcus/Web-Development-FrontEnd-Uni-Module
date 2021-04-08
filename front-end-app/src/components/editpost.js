@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Input, Button } from 'antd';
+import { PageHeader, Form, Input, Button } from 'antd';
 import UserContext from '../contexts/user';
 import { status, json } from '../utilities/requestHandlers';
 
@@ -98,42 +98,48 @@ class RegistrationForm extends React.Component {
 
     if (this.context.user.ID === this.state.post.authorID) {
       return (
-        <Form {...formItemLayout} name="Finalize" onFinish={this.onFinish} validateMessages={validateMessages} scrollToFirstError
-          initialValues={{
-            title: post.title,
-            breed: post.breed,
-            summary: post.summary,
-            imageURL: post.imageURL,
-          }}
-        >
-          <Form.Item name="title" label="Listing Title" rules={[{ required: true }]}>     
-            <Input />      
-          </Form.Item>
+        <div className="site-layout-content">
+          <div style={{ padding: '2% 25%' }}>
+            <PageHeader className="site-page-header"
+              title="Edit the post below"
+              subTitle="This is where you can update this post."/>
+            </div>  
+          <Form {...formItemLayout} name="Finalize" onFinish={this.onFinish} validateMessages={validateMessages} scrollToFirstError
+            initialValues={{
+              title: post.title,
+              breed: post.breed,
+              summary: post.summary,
+              imageURL: post.imageURL,
+            }}
+          >
+            <Form.Item name="title" label="Listing Title" rules={[{ required: true }]}>     
+              <Input />      
+            </Form.Item>
+            
+            <Form.Item name="breed" label="Dog Breed" rules={[{ required: true }]}>     
+              <Input />   
+            </Form.Item>
           
-          <Form.Item name="breed" label="Dog Breed" rules={[{ required: true }]}>     
-            <Input />   
-          </Form.Item>
-        
-          <Form.Item {...formSummaryLayout} name="summary" label="Summary" >      
-            <Input.TextArea /> 
-          </Form.Item>
-        
-          <Form.Item name="imageURL" label="Image URL?" >      
-            <Input />
-          </Form.Item>
-        
-          <Form.Item {...tailFormItemLayout}>     
-            <Button type="primary" htmlType="submit" >     
-              Finalize   
-            </Button> 
-            <Button type="primary" htmlType="submit" onClick={()=>this.deleteListing()} danger >     
-              Delete Listing  
-            </Button>  
-          </Form.Item >
-        </Form>     
+            <Form.Item {...formSummaryLayout} name="summary" label="Summary" >      
+              <Input.TextArea /> 
+            </Form.Item>
+          
+            <Form.Item name="imageURL" label="Image URL?" >      
+              <Input />
+            </Form.Item>
+          
+            <Form.Item {...tailFormItemLayout}>     
+              <Button type="primary" htmlType="submit" >     
+                Finalize   
+              </Button> 
+              <Button type="primary" htmlType="submit" onClick={()=>this.deleteListing()} danger >     
+                Delete Listing  
+              </Button>  
+            </Form.Item >
+          </Form>     
+        </div>
       );
-    }
-    
+    }    
     return (
       <p>Please login as the author of this listing to edit it</p>
     );
