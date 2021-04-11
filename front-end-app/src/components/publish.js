@@ -70,7 +70,7 @@ class RegistrationForm extends React.Component {
     
     if(this.context.user.loggedIn === false) {
       return (
-          <p>Please Login</p>
+          <p>Please Login as an employee to create a dog listing.</p>
       );
     }
 

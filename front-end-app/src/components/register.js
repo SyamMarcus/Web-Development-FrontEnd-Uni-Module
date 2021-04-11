@@ -52,12 +52,12 @@ class RegistrationForm extends React.Component {
     .then(status)
     .then(json)
     .then(code => {
-      if(Object.values(code) === 1) {
+      console.log(Object.values(code)[0])
+      if(Object.values(code)[0] === 1) {
         values.role = 'admin';
       } else {
         values.role = 'user';
       }
-      values.role = 'admin';
       delete values.employeeCode;
       const { confirm, ...data } = values;
       return fetch('http://localhost:3030/TCS/register/', {
