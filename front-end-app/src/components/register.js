@@ -1,5 +1,5 @@
 import React from 'react';
-import { PageHeader, Form, Input, Button } from 'antd';
+import { Row, Col, PageHeader, Form, Input, Button } from 'antd';
 import { status, json } from '../utilities/requestHandlers';
 
 const formItemLayout = {
@@ -92,35 +92,51 @@ class RegistrationForm extends React.Component {
           <PageHeader className="site-page-header"
             title="Register Page"
             subTitle="This is where you can register a new account."/>
-            </div>  
+        </div>  
         <Form {...formItemLayout} name="register" onFinish={this.onFinish} scrollToFirstError>
-        
+          <Form.Item style={{ marginBottom: 6 }} label="Employee Code" 
+            extra="To create an employee account enter a valid employee account code">
+            <Row gutter={8}>
+              <Col span={6}>
+                <Form.Item
+                    name="employeeCode"
+                    noStyle
+                  >
+                  <Input placeholder="(optional)" />
+                </Form.Item>
+              </Col>
+            </Row>
+          </Form.Item>
+          
           <Form.Item name="email" label="E-mail" rules={emailRules}>     
-            <Input />      
+            <Input placeholder="account@mail.com"/>      
           </Form.Item>
 
           <Form.Item name="userName" label="Username" rules={userNameRules}>      
-            <Input />
+            <Input placeholder="Username"/>
           </Form.Item>
 
-          <Form.Item name="firstName" label="First name">      
-            <Input />
+          <Form.Item label="Full Name" style={{ marginBottom: 0 }}>
+            <Form.Item
+              name="firstName"
+              style={{ display: 'inline-block', width: 'calc(40% - 8px)' }}
+            >
+              <Input placeholder="First name" />
+            </Form.Item>
+            <Form.Item
+              name="lastName"
+              style={{ display: 'inline-block', width: 'calc(60% - 8px)', margin: '0 8px' }}
+            >
+              <Input placeholder="Last name" />
+            </Form.Item>
           </Form.Item>
-
-          <Form.Item name="lastName" label="Last name">      
-            <Input />
-          </Form.Item>
-        
+          
           <Form.Item name="password" label="Password" hasFeedback rules={passwordRules}>     
-            <Input.Password />     
+            <Input.Password placeholder="Password"/>     
           </Form.Item>
         
           <Form.Item name="confirm" label="Confirm Password" rules={confirmRules}>      
-            <Input.Password />      
-          </Form.Item>
-
-          <Form.Item name="employeeCode" label="Employee Code">      
-            <Input />
+            <Input.Password placeholder="Confirm Password"/>      
           </Form.Item>
         
           <Form.Item {...tailFormItemLayout}>     

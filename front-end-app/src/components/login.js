@@ -1,5 +1,5 @@
 import React from 'react';
-import { PageHeader, Form, Input, Button, Checkbox } from 'antd';
+import { Space, PageHeader, Form, Input, Button } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import UserContext from '../contexts/user';
 import { status, json } from '../utilities/requestHandlers';
@@ -51,6 +51,7 @@ class LoginForm extends React.Component {
             title="Login Page"
             subTitle="This is where you can login."/>
         </div>  
+    
         <Form {...formItemLayout}
           name="normal_login"
           className="login-form"
@@ -60,12 +61,14 @@ class LoginForm extends React.Component {
         >
           <Form.Item 
             name="username"
+            label="Username"
             rules={[{ required: true, message: 'Please input your Username!' }]}
           >
             <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username" />
           </Form.Item>
           <Form.Item
             name="password"
+            label="Password"
             rules={[{ required: true, message: 'Please input your Password!' }]}
           >
             <Input
@@ -74,17 +77,16 @@ class LoginForm extends React.Component {
               placeholder="Password"
             />
           </Form.Item>
-          <Form.Item>
-            <Form.Item name="remember" valuePropName="checked" noStyle>
-              <Checkbox>Remember me</Checkbox>
-            </Form.Item>
-          </Form.Item>
-    
+          
           <Form.Item {...tailFormItemLayout}>
+          <Space size={'small'}>
             <Button type="primary" htmlType="submit" className="login-form-button">
-              Log in
+              Log in 
             </Button>
-            Or <a href="/register">register now!</a>
+            <Space size={'small'}>
+              Or <a href="/register">register now!</a>
+            </Space>
+          </Space>
           </Form.Item>
         </Form>
       </div>

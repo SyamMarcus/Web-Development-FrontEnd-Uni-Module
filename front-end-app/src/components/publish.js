@@ -32,7 +32,6 @@ class RegistrationForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      post: undefined
     }
     this.onFinish = this.onFinish.bind(this);
   }
@@ -68,9 +67,19 @@ class RegistrationForm extends React.Component {
 
   render() {
     
-    if(this.context.user.loggedIn === false) {
+    const user = this.context.user;
+
+    if(user.loggedIn === false) {
       return (
-          <p>Please Login as an employee to create a dog listing.</p>
+          <p>Please Login as an employee to publish a dog listing.</p>
+      );
+    }
+
+    if (user.role !== 'user') {
+      return (
+          <p>You must be logged in as an employee to publish a listing.
+             You are currently logged in as a basic user. 
+             View account page for more info.</p>
       );
     }
 
