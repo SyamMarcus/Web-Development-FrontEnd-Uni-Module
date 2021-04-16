@@ -76,19 +76,23 @@ class App extends React.Component {
             trigger={null} 
             collapsible collapsed={this.state.collapsed}
             style={{
+            color: 'whitesmoke' , 
+            fontSize: '22px',
+            textAlign: 'center',
             overflow: 'auto',
             width: '50px',
             height: '100vh',
             left: 0,}} >
-            <Nav/>
-          </Sider>
-          
-          <Layout className="site-layout" >
-            <Header className="site-layout-background" style={{ paddingLeft:20, position:'relative' , color: 'whitesmoke' , fontSize: '24px' }}>
               {React.createElement(this.state.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
                 className: 'trigger',
                 onClick: this.toggle,
               })}
+            <Nav/>
+          </Sider>
+          
+          <Layout className="site-layout" >
+            <Header className="site-layout-background" style={{ textAlign: 'center' , color: 'whitesmoke' , fontSize: '30px' }}>
+              The Canine Shelter
             </Header>
               <Content
                   style={{
