@@ -71,15 +71,29 @@ class RegistrationForm extends React.Component {
 
     if(user.loggedIn === false) {
       return (
-          <p>Please Login as an employee to publish a dog listing.</p>
+        <div className="site-layout-content">
+          <div style={{ padding: '2% 25%' }}>
+            <PageHeader className="site-page-header"
+              title="Publish Listing"
+              subTitle="This is where you can publish a new dog listing."/> 
+          </div> 
+            <p>Please Login with an employee account to publish a dog listing.</p>
+        </div>
       );
     }
 
     if (user.role !== 'user') {
       return (
-          <p>You must be logged in as an employee to publish a listing.
-             You are currently logged in as a basic user. 
-             View account page for more info.</p>
+        <div className="site-layout-content">
+          <div style={{ padding: '2% 25%' }}>
+            <PageHeader className="site-page-header"
+              title="Publish Listing"
+              subTitle="This is where you can publish a new dog listing."/> 
+          </div>
+            <p>You must be logged in as an employee to publish a listing.
+              You are currently logged in as a basic user. 
+              View account page for more info.</p>
+        </div>
       );
     }
 

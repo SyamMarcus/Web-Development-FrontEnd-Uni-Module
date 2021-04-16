@@ -94,7 +94,7 @@ class RegistrationForm extends React.Component {
             subTitle="This is where you can register a new account."/>
         </div>  
         <Form {...formItemLayout} name="register" onFinish={this.onFinish} scrollToFirstError>
-          <Form.Item style={{ marginBottom: 6 }} label="Employee Code" 
+          <Form.Item style={{ marginBottom: 10 }} label="Employee Code" 
             extra="To create an employee account enter a valid employee account code">
             <Row gutter={8}>
               <Col span={6}>
@@ -119,13 +119,13 @@ class RegistrationForm extends React.Component {
           <Form.Item label="Full Name" style={{ marginBottom: 0 }}>
             <Form.Item
               name="firstName"
-              style={{ display: 'inline-block', width: 'calc(40% - 8px)' }}
+              style={{ display: 'inline-block', width: 'calc(40% - 2px)' }}
             >
               <Input placeholder="First name" />
             </Form.Item>
             <Form.Item
               name="lastName"
-              style={{ display: 'inline-block', width: 'calc(60% - 8px)', margin: '0 8px' }}
+              style={{ display: 'inline-block', width: 'calc(60% - 2px)', margin: '0 2px' }}
             >
               <Input placeholder="Last name" />
             </Form.Item>

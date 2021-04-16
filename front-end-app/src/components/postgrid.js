@@ -1,7 +1,7 @@
 /* eslint-disable no-unreachable */
 import React from 'react'; 
 import { withRouter } from 'react-router';
-import { Card, Row, Col, Button, Input } from 'antd';
+import { Card, Row, Col, Button, Input, Pagination } from 'antd';
 import { Link } from "react-router-dom";
 import { status, json } from '../utilities/requestHandlers';
 
@@ -28,6 +28,21 @@ class PostGrid extends React.Component {
     .then(postgrid => {
       console.log(postgrid)
       this.setState({postgrid:postgrid})
+    })
+    .catch(err => {
+      console.log(`Fetch error for post`)
+    });
+  }
+
+  update(pageNumber) {
+    console.log(pageNumber);
+    fetch(`http://localhost:3030/TCS/listings/?limit=` + pageLimit + `&page=` + pageNumber)
+    .then(status)
+    .then(json)
+    .then(postgrid => {
+      console.log(this)
+      this.setState({postgrid:postgrid})
+      console.log('test')
     })
     .catch(err => {
       console.log(`Fetch error for post`)
@@ -88,7 +103,7 @@ class PostGrid extends React.Component {
     for (i = 0; i < postgrid.length; i++) { 
       const postURL = '/post/' + postgrid[i].ID;
         final.push(
-          <Col span={4}>
+          <Col span={pageLimit}>
             <Link to={postURL}>
               <Card cover={<img alt={i} src={postgrid[i].imageURL}/>}>
                 <Meta title={postgrid[i].title} description={postgrid[i].breed} />
@@ -115,6 +130,8 @@ class PostGrid extends React.Component {
         <Button type="default" htmlType="submit" onClick={()=>this.forward()}>     
           forward   
         </Button> 
+        <Pagination defaultCurrent={10} total={20}  />
+
       </>
     );
   }
