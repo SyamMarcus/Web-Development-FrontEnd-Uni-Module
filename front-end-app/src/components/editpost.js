@@ -1,5 +1,6 @@
 import React from 'react';
-import { PageHeader, Form, Input, Button } from 'antd';
+import { Redirect } from 'react-router-dom';
+import { PageHeader, Form, Input, Button, message } from 'antd';
 import UserContext from '../contexts/user';
 import { status, json } from '../utilities/requestHandlers';
 
@@ -33,7 +34,8 @@ class RegistrationForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      post: undefined
+      redirect: null,
+      fileList: [],
     }
     this.onFinish = this.onFinish.bind(this);
   }
@@ -70,7 +72,10 @@ class RegistrationForm extends React.Component {
       .then(json)
       .then(data => {
         console.log(data);
-        alert("Listing Updated")
+        message.success("Listing Published.");
+          
+        const url = '/post/' + data.ID;
+        this.setState({ redirect: url });
       })
       .catch(errorResponse => {
         console.error(errorResponse);
@@ -91,6 +96,11 @@ class RegistrationForm extends React.Component {
   }
 
   render() {
+
+    if (this.state.redirect) {
+      return <Redirect to={this.state.redirect} />
+    }
+    
     if (!this.state.post) {
       return <h3>Loading post...</h3>
     }
@@ -109,7 +119,6 @@ class RegistrationForm extends React.Component {
               title: post.title,
               breed: post.breed,
               summary: post.summary,
-              imageURL: post.imageURL,
             }}
           >
             <Form.Item name="title" label="Listing Title" rules={[{ required: true }]}>     
@@ -122,10 +131,6 @@ class RegistrationForm extends React.Component {
           
             <Form.Item {...formSummaryLayout} name="summary" label="Summary" >      
               <Input.TextArea /> 
-            </Form.Item>
-          
-            <Form.Item name="imageURL" label="Image URL?" >      
-              <Input />
             </Form.Item>
           
             <Form.Item {...tailFormItemLayout}>     

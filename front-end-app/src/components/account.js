@@ -1,89 +1,75 @@
 import React from 'react';
-import { PageHeader, Button, Upload, message } from 'antd';
+import { Link } from "react-router-dom";
+import { Card, PageHeader, Row, Col, Image } from 'antd';
 import { status, json } from '../utilities/requestHandlers';
-import { UploadOutlined } from '@ant-design/icons';
+import UserContext from '../contexts/user';
+
+
+const { Meta } = Card;
 
 
 class Account extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      fileList: [],
-      uploading: false,
+      posts: undefined,
     }
   }
 
+  static contextType = UserContext;
 
-  handleUpload = () => {
-    const { fileList } = this.state;
-    const formData = new FormData();
-    fileList.forEach(file => {
-      formData.append('upload', file);
-    });
-
-    this.setState({
-      uploading: true,
-    });
-
-    fetch('http://localhost:3030/TCS/listings/images', {
-      method: "POST",
-      body: formData,
-    })
+  componentDidMount() {
+    const id = this.context.user.ID;
+    fetch(`http://localhost:3030/TCS/listings/account/${id}`)
     .then(status)
     .then(json)
-    .then(data => {
-      console.log(data);
-      this.setState({
-        // ACTUALLY USE NESTED CALLBACK LIKE PREVIOUS AND PASS data.file.path 
-        // remove submit button and change onFinish form method to use nested callback
-        fileList: [], // Resets fileList displayed?
-        uploading: false,
-      });
-      message.success('upload successfully.');
+    .then(posts => {
+      console.log(posts)
+      this.setState({posts: posts})
     })
-    .then( )
-    .catch(errorResponse => {
-      this.setState({
-        uploading: false,
-      });
-      message.error('upload failed.');
-      console.error(errorResponse);
-      alert(`Error: ${errorResponse}`);
-    });  
-  };
+    .catch(err => {
+      console.log(`Fetch error for post by authorID: ${id}`)
+    });
+  }
+
 
  render() {
+  
+  const user = this.context.user;
+  if(user.loggedIn === false) {
+    return (
+      <div className="site-layout-content">
+        <div style={{ padding: '2% 25%' }}>
+          <PageHeader className="site-page-header"
+            title="Account page"
+            subTitle="This is where you can edit account settings."/>
+        </div>  
+          <p>Please Login with an account to view account details.</p>
+      </div>
+    );
+  }
 
-  const { uploading, fileList } = this.state;
-  const props = {
-    onRemove: file => {
-      this.setState(state => {
-        const index = state.fileList.indexOf(file);
-        const newFileList = state.fileList.slice();
-        newFileList.splice(index, 1);
-        return {
-          fileList: newFileList,
-        };
-      });
-    },
+  if (!this.state.posts) {
+    return <h3>Loading Account Details...</h3>
+  }
 
-    beforeUpload: file => {
-      const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-      if (!isJpgOrPng) {
-        return message.error('You can only upload JPG/PNG file!');
-      }
-      const isLt2M = file.size / 1024 / 1024 < 2;
-      if (!isLt2M) {
-        return message.error('Image must smaller than 2MB!');
-      }
-
-      this.setState(state => ({
-        fileList: [...state.fileList, file],
-      }));
-      return false
-    },
-    fileList,
-  };
+  const posts = this.state.posts;
+  const final = [];
+  var i;
+  for (i = 0; i < posts.length; i++) { 
+    const altImage = "http://localhost:3030/TCS/listings/images/32886caa-6ab2-41ad-9257-b1602a110ebd"
+    const image = "http://localhost:3030" + posts[i].imageURL
+    const postURL = '/post/' + posts[i].ID;
+      final.push(
+        <Col span={5} style={{ marginBottom: '40px' }}>
+          <Link to={postURL}>
+            <Card cover={<Image alt="Listing Image" fallback={altImage} src={image}/>}>
+              <Meta title={posts[i].title} description={posts[i].breed} />
+            </Card>
+          </Link>
+        </Col>
+      );
+    }
 
   return (
     <>
@@ -93,18 +79,10 @@ class Account extends React.Component {
             title="Account page"
             subTitle="This is where you can edit account settings."/>
         </div>  
-        <Upload {...props}>
-          <Button icon={<UploadOutlined />}>Select File</Button>
-        </Upload>
-        <Button
-          type="primary"
-          onClick={this.handleUpload}
-          disabled={fileList.length === 0 || fileList.length > 1}
-          loading={uploading}
-          style={{ marginTop: 16 }}
-        >
-          {uploading ? 'Uploading' : 'Start Upload'}
-        </Button>
+        <h> You're Listngs: </h>
+        <Row type="flex" justify="space-around" >
+          {final}
+        </Row> 
       </div>
       </>
     );  
