@@ -53,7 +53,7 @@ class RegistrationForm extends React.Component {
     fileList.forEach(file => {
       formData.append('upload', file);
     });
-    fetch('http://localhost:3030/TCS/listings/images', {
+    fetch('http://localhost:3030/TCS/images', {
       method: "POST",
       body: formData,
     })

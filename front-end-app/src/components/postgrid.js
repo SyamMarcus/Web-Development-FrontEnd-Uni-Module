@@ -101,7 +101,7 @@ class PostGrid extends React.Component {
 
     var i;
     for (i = 0; i < postgrid.length; i++) { 
-      const altImage = "http://localhost:3030/TCS/listings/images/32886caa-6ab2-41ad-9257-b1602a110ebd"
+      const altImage = "http://localhost:3030/TCS/images/32886caa-6ab2-41ad-9257-b1602a110ebd"
       const image = "http://localhost:3030" + postgrid[i].imageURL
       const postURL = '/post/' + postgrid[i].ID;
         final.push(

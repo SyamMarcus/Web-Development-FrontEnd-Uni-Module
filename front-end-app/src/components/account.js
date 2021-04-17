@@ -57,12 +57,12 @@ class Account extends React.Component {
   const final = [];
   var i;
   for (i = 0; i < posts.length; i++) { 
-    const altImage = "http://localhost:3030/TCS/listings/images/32886caa-6ab2-41ad-9257-b1602a110ebd"
+    const altImage = "http://localhost:3030/TCS/images/32886caa-6ab2-41ad-9257-b1602a110ebd"
     const image = "http://localhost:3030" + posts[i].imageURL
-    const postURL = '/post/' + posts[i].ID;
+    const url = '/post/' + posts[i].ID;
       final.push(
         <Col span={5} style={{ marginBottom: '40px' }}>
-          <Link to={postURL}>
+          <Link to={url}>
             <Card cover={<Image alt="Listing Image" fallback={altImage} src={image}/>}>
               <Meta title={posts[i].title} description={posts[i].breed} />
             </Card>

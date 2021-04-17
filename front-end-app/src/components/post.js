@@ -39,7 +39,7 @@ class Post extends React.Component {
       return <h3>Loading post...</h3>
     }
     const post = this.state.post;
-    const altImage = "http://localhost:3030/TCS/listings/images/32886caa-6ab2-41ad-9257-b1602a110ebd"
+    const altImage = "http://localhost:3030/TCS/images/32886caa-6ab2-41ad-9257-b1602a110ebd"
     const image = "http://localhost:3030" + post.imageURL
 
     if (this.context.user.ID === this.state.post.authorID) {
