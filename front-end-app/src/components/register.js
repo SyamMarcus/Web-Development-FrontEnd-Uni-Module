@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col, PageHeader, Form, Input, Button, Upload, message, Image } from 'antd';
+import { Row, Col, PageHeader, Form, Input, Button, Upload, message } from 'antd';
 import { status, json } from '../utilities/requestHandlers';
 import { UploadOutlined } from '@ant-design/icons';
 
@@ -42,66 +42,17 @@ class RegistrationForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      post: undefined,
       fileList: [],
-      uploading: false,
     }
     this.onFinish = this.onFinish.bind(this);
   }
 
   onFinish = (values) => {
-    console.log('Received values of form: ', values);
-    fetch('http://localhost:3030/TCS/register/search?code=' + values.employeeCode)
-    .then(status)
-    .then(json)
-    .then(code => {
-      console.log(Object.values(code)[0])
-      if(Object.values(code)[0] === 1) {
-        values.role = 'admin';
-      } else {
-        values.role = 'user';
-      }
-      delete values.employeeCode;
-      const { confirm, ...data } = values;
-      return fetch('http://localhost:3030/TCS/register/', {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json"
-        }
-      })
-      .then(status)
-      .then(json)
-      .then(data => {
-        console.log(data);
-        alert("User added")
-      })
-
-      .catch(errorResponse => {
-        console.error(errorResponse);
-        alert(`Error: ${errorResponse}`);
-      });  
-    })
-    .catch(errorResponse => {
-      console.error(errorResponse);
-      alert(`Error: ${errorResponse}`);
-    });  
-  };
-
-
-
-
-  handleUpload = () => {
     const { fileList } = this.state;
     const formData = new FormData();
     fileList.forEach(file => {
       formData.append('upload', file);
     });
-
-    this.setState({
-      uploading: true,
-    });
-
     fetch('http://localhost:3030/TCS/listings/images', {
       method: "POST",
       body: formData,
@@ -110,27 +61,61 @@ class RegistrationForm extends React.Component {
     .then(json)
     .then(data => {
       console.log(data);
-      this.setState({
-        fileList: [],
-        uploading: false,
-      });
-      message.success('upload successfully.');
+      values.avatarURL = data.file.path;
+      message.success('Uploaded Successfully.');
+
+      console.log('Form: ', values);
+      fetch('http://localhost:3030/TCS/register/search?code=' + values.employeeCode)
+      .then(status)
+      .then(json)
+      .then(code => {
+
+        if(Object.values(code)[0] === 1) {
+          values.role = 'admin';
+        } else {
+          values.role = 'user';
+        }
+        delete values.employeeCode;
+        const { confirm, ...data } = values;
+        return fetch('http://localhost:3030/TCS/register/', {
+          method: "POST",
+          body: JSON.stringify(data),
+          headers: {
+            "Content-Type": "application/json"
+          }
+        })
+        .then(status)
+        .then(json)
+        .then(data => {
+          this.setState({
+            fileList: [], 
+          });
+          console.log(data);
+          message.success('Listing Created.');
+          // Send user to new listing page uri
+        })
+        .catch(errorResponse => {
+          console.error(errorResponse);
+          alert(`Error: ${errorResponse}`);
+        });  
+      })
+  
+      .catch(errorResponse => {
+        console.error(errorResponse);
+        alert(`Error: ${errorResponse}`);
+      });  
     })
-    .then( )
+
     .catch(errorResponse => {
-      this.setState({
-        uploading: false,
-      });
       message.error('upload failed.');
       console.error(errorResponse);
       alert(`Error: ${errorResponse}`);
     });  
   };
 
-
   render() {
 
-    const { uploading, fileList } = this.state;
+    const { fileList } = this.state;
     const props = {
       onRemove: file => {
         this.setState(state => {
@@ -156,33 +141,18 @@ class RegistrationForm extends React.Component {
         this.setState(state => ({
           fileList: [...state.fileList, file],
         }));
+        return false
       },
       fileList,
     };
 
     return (
       <div className="site-layout-content">
-        <div style={{ padding: '2% 25%' }}>
+        <div style={{ padding: '1% 25%' }}>
           <PageHeader className="site-page-header"
             title="Register Page"
             subTitle="This is where you can register a new account."/>
         </div>  
-        <Upload {...props}>
-          <Button icon={<UploadOutlined />}>Select File</Button>
-        </Upload>
-        <Button
-          type="primary"
-          onClick={this.handleUpload}
-          disabled={fileList.length === 0}
-          loading={uploading}
-          style={{ marginTop: 16 }}
-        >
-          {uploading ? 'Uploading' : 'Start Upload'}
-        </Button>
-        <Image
-            width={200}
-            src="http://localhost:3030/TCS/listings/images/c3d4c5ab-56f4-48a6-9ae4-1eb2848df670"
-          />
         <Form {...formItemLayout} name="register" onFinish={this.onFinish} scrollToFirstError>
           <Form.Item style={{ marginBottom: 10 }} label="Employee Code" 
             extra="To create an employee account enter a valid employee account code">
@@ -197,7 +167,13 @@ class RegistrationForm extends React.Component {
               </Col>
             </Row>
           </Form.Item>
-          
+
+          <Form.Item name="avatarURL" label="Listing Image" rules={[{ required: true, message: 'Please upload an image file!' }]}>     
+            <Upload {...props}>
+              <Button icon={<UploadOutlined />}>Select File</Button >
+            </Upload>
+          </Form.Item>
+
           <Form.Item name="email" label="E-mail" rules={emailRules}>     
             <Input placeholder="account@mail.com"/>      
           </Form.Item>
@@ -230,7 +206,7 @@ class RegistrationForm extends React.Component {
           </Form.Item>
         
           <Form.Item {...tailFormItemLayout}>     
-            <Button type="primary" htmlType="submit">     
+            <Button type="primary" htmlType="submit" disabled={fileList.length > 1} >     
               Register     
             </Button>    
           </Form.Item >
