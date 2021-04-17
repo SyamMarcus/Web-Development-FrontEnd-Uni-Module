@@ -1,7 +1,9 @@
 import React from 'react';
-import { PageHeader, Form, Input, Button } from 'antd';
-import UserContext from '../contexts/user';
+import { Redirect } from 'react-router-dom';
+import { PageHeader, Form, Input, Button, Upload, message } from 'antd';
 import { status, json } from '../utilities/requestHandlers';
+import { UploadOutlined } from '@ant-design/icons';
+import UserContext from '../contexts/user';
 
 const formItemLayout = {
   labelCol: { xs: { span: 24 }, sm: { span: 6 } },
@@ -32,40 +34,71 @@ class RegistrationForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      redirect: null,
+      fileList: [],
     }
     this.onFinish = this.onFinish.bind(this);
   }
 
   static contextType = UserContext;
 
+
   onFinish = (values) => {
-    values.authorID = this.context.user.ID
-    console.log('Received values of form: ', values);
-    const { confirm, ...data } = values;
-    if(window.confirm('Confirm Creation?')) {
-      fetch('http://localhost:3030/TCS/listings', {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json"
-        }
-      })
-      
-      .then(status)
-      .then(json)
-      .then(data => {
-        console.log(data);
-        alert("Listing published")
-      })
-      
-      .catch(errorResponse => {
-        console.error(errorResponse);
-        alert(`Error: ${errorResponse}`);
-      });  
-    };
-  }
+    const { fileList } = this.state;
+    const formData = new FormData();
+    fileList.forEach(file => {
+      formData.append('upload', file);
+    });
+    fetch('http://localhost:3030/TCS/listings/images', {
+      method: "POST",
+      body: formData,
+    })
+    .then(status)
+    .then(json)
+    .then(response => {
+            
+      values.imageURL = response.file.path;
+      values.authorID = this.context.user.ID;
+
+      console.log('Form: ', values);
+      const { confirm, ...data } = values;
+      if(window.confirm('Confirm Creation?')) {
+        fetch('http://localhost:3030/TCS/listings', {
+          method: "POST",
+          body: JSON.stringify(data),
+          headers: {
+            "Content-Type": "application/json"
+          }
+        })
+        
+        .then(status)
+        .then(json)
+        .then(data => {
+          console.log(data);      
+          message.success("Listing Published.");
+          
+          const url = '/post/' + data.ID;
+          this.setState({ redirect: url });
+        })
+        
+        .catch(errorResponse => {
+          console.error(errorResponse);
+          alert(`Error: ${errorResponse}`);
+        });  
+      };
+    })
+    .catch(errorResponse => {
+      message.error('upload failed.');
+      console.error(errorResponse);
+      alert(`Error: ${errorResponse}`);
+    });  
+  };
 
   render() {
+
+    if (this.state.redirect) {
+      return <Redirect to={this.state.redirect} />
+    }
     
     const user = this.context.user;
 
@@ -97,6 +130,37 @@ class RegistrationForm extends React.Component {
       );
     }
 
+    const { fileList } = this.state;
+    const props = {
+      onRemove: file => {
+        this.setState(state => {
+          const index = state.fileList.indexOf(file);
+          const newFileList = state.fileList.slice();
+          newFileList.splice(index, 1);
+          return {
+            fileList: newFileList,
+          };
+        });
+      },
+
+      beforeUpload: file => {
+        const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+        if (!isJpgOrPng) {
+          return message.error('You can only upload JPG/PNG file!');
+        }
+        const isLt2M = file.size / 1024 / 1024 < 2;
+        if (!isLt2M) {
+          return message.error('Image must smaller than 2MB!');
+        }
+
+        this.setState(state => ({
+          fileList: [...state.fileList, file],
+        }));
+        return false
+      },
+      fileList,
+    };
+
     return (
       <div className="site-layout-content">
         <div style={{ padding: '2% 25%' }}>
@@ -106,6 +170,12 @@ class RegistrationForm extends React.Component {
             </div>  
         <Form {...formItemLayout} name="publish" onFinish={this.onFinish} validateMessages={validateMessages} scrollToFirstError>
         
+          <Form.Item name="imageURL" label="Listing Image" rules={[{ required: true, message: 'Please upload an image file!' }]}>     
+            <Upload {...props}>
+              <Button icon={<UploadOutlined />}>Select File</Button >
+            </Upload>
+          </Form.Item>
+
           <Form.Item name="title" label="Listing Title" rules={[{ required: true }]}>     
             <Input placeholder="title"/>      
           </Form.Item>
@@ -116,10 +186,6 @@ class RegistrationForm extends React.Component {
         
           <Form.Item {...formSummaryLayout} name="summary" label="Summary" >      
             <Input.TextArea placeholder="summary"/>   
-          </Form.Item>
-        
-          <Form.Item name="imageURL" label="Image URL?" >      
-            <Input placeholder="imageURL"/>
           </Form.Item>
         
           <Form.Item {...tailFormItemLayout}>     

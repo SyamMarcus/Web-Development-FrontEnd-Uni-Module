@@ -168,7 +168,7 @@ class RegistrationForm extends React.Component {
             </Row>
           </Form.Item>
 
-          <Form.Item name="avatarURL" label="Listing Image" rules={[{ required: true, message: 'Please upload an image file!' }]}>     
+          <Form.Item name="avatarURL" label="Avatar Image" rules={[{ required: true, message: 'Please upload an image file!' }]}>     
             <Upload {...props}>
               <Button icon={<UploadOutlined />}>Select File</Button >
             </Upload>

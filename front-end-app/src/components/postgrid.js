@@ -1,7 +1,7 @@
 /* eslint-disable no-unreachable */
 import React from 'react'; 
 import { withRouter } from 'react-router';
-import { Card, Row, Col, Button, Input, Pagination } from 'antd';
+import { Card, Row, Col, Button, Input, Pagination, Image } from 'antd';
 import { Link } from "react-router-dom";
 import { status, json } from '../utilities/requestHandlers';
 
@@ -101,11 +101,13 @@ class PostGrid extends React.Component {
 
     var i;
     for (i = 0; i < postgrid.length; i++) { 
+      const altImage = "http://localhost:3030/TCS/listings/images/32886caa-6ab2-41ad-9257-b1602a110ebd"
+      const image = "http://localhost:3030" + postgrid[i].imageURL
       const postURL = '/post/' + postgrid[i].ID;
         final.push(
           <Col span={pageLimit}>
             <Link to={postURL}>
-              <Card cover={<img alt={i} src={postgrid[i].imageURL}/>}>
+              <Card cover={<Image alt="Listing Image" fallback={altImage} src={image}/>}>
                 <Meta title={postgrid[i].title} description={postgrid[i].breed} />
               </Card>
             </Link>
