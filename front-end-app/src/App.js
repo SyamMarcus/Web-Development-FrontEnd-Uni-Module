@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout } from 'antd';
+import { Layout, message } from 'antd';
 import './App.css';
 import UserContext from './contexts/user';
 import {
@@ -57,6 +57,7 @@ class App extends React.Component {
   logout() {
     console.log("Removing user from the app context");
     this.setState({user: {loggedIn:false}});
+    message.info('Logged out!');
   }
 
   render() {

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 import { Row, Col, PageHeader, Form, Input, Button, Upload, message } from 'antd';
 import { status, json } from '../utilities/requestHandlers';
 import { UploadOutlined } from '@ant-design/icons';
@@ -42,6 +43,7 @@ class RegistrationForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      redirect: null,
       fileList: [],
     }
     this.onFinish = this.onFinish.bind(this);
@@ -62,8 +64,7 @@ class RegistrationForm extends React.Component {
     .then(data => {
       console.log(data);
       values.avatarURL = data.file.path;
-      message.success('Uploaded Successfully.');
-
+      
       console.log('Form: ', values);
       fetch('http://localhost:3030/TCS/register/search?code=' + values.employeeCode)
       .then(status)
@@ -91,8 +92,10 @@ class RegistrationForm extends React.Component {
             fileList: [], 
           });
           console.log(data);
-          message.success('Listing Created.');
-          // Send user to new listing page uri
+          message.success('Account Created.');
+
+          const url = '/login/';
+          this.setState({ redirect: url });
         })
         .catch(errorResponse => {
           console.error(errorResponse);
@@ -114,6 +117,10 @@ class RegistrationForm extends React.Component {
   };
 
   render() {
+
+    if (this.state.redirect) {
+      return <Redirect to={this.state.redirect} />
+    }
 
     const { fileList } = this.state;
     const props = {

@@ -57,6 +57,8 @@ class RegistrationForm extends React.Component {
   }
 
   onFinish = (values) => {
+    const username = this.context.user.username;
+    const password = this.context.user.password;
     const id = window.location.pathname.split('/')[2];
     console.log('Received values of form: ', values);
     const { confirm, ...data } = values;
@@ -65,6 +67,7 @@ class RegistrationForm extends React.Component {
         method: "PUT",
         body: JSON.stringify(data),
         headers: {
+          "Authorization": "Basic " + btoa(username + ":" + password),
           "Content-Type": "application/json"
         }
       })
@@ -85,12 +88,16 @@ class RegistrationForm extends React.Component {
   
   deleteListing = () => {
     const id = window.location.pathname.split('/')[2];
+    const username = this.context.user.username;
+    const password = this.context.user.password;
     if(window.confirm('Confirm Deletion?')) {
       fetch(`http://localhost:3030/TCS/listings/${id}` , {
         method: "DELETE",
-        header:{'Accept':'application/json',
-        'Content-Type':'application/json'
-      }
+        header:{
+          "Authorization": "Basic " + btoa(username + ":" + password),
+          'Accept':'application/json',
+          'Content-Type':'application/json'
+        }
       })
     } 
   }

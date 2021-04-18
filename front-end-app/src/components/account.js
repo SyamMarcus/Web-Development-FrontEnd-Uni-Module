@@ -19,8 +19,14 @@ class Account extends React.Component {
   static contextType = UserContext;
 
   componentDidMount() {
+    const username = this.context.user.username;
+    const password = this.context.user.password;
     const id = this.context.user.ID;
-    fetch(`http://localhost:3030/TCS/listings/account/${id}`)
+    fetch(`http://localhost:3030/TCS/listings/account`, {
+      headers: {
+        "Authorization": "Basic " + btoa(username + ":" + password),
+      }
+    })
     .then(status)
     .then(json)
     .then(posts => {

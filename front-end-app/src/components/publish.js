@@ -62,11 +62,14 @@ class RegistrationForm extends React.Component {
 
       console.log('Form: ', values);
       const { confirm, ...data } = values;
+      const username = this.context.user.username;
+      const password = this.context.user.password;
       if(window.confirm('Confirm Creation?')) {
         fetch('http://localhost:3030/TCS/listings', {
           method: "POST",
           body: JSON.stringify(data),
           headers: {
+            "Authorization": "Basic " + btoa(username + ":" + password),
             "Content-Type": "application/json"
           }
         })

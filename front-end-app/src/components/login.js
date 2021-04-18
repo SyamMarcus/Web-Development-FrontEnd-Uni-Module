@@ -1,5 +1,6 @@
 import React from 'react';
-import { Space, PageHeader, Form, Input, Button } from 'antd';
+import { Redirect } from 'react-router-dom';
+import { Space, PageHeader, Form, Input, Button, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import UserContext from '../contexts/user';
 import { status, json } from '../utilities/requestHandlers';
@@ -17,6 +18,9 @@ const tailFormItemLayout = {
 class LoginForm extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      redirect: null,
+    }
     this.login = this.login.bind(this);
   }
   
@@ -34,8 +38,12 @@ class LoginForm extends React.Component {
     .then(status)
     .then(json)
     .then(user => {
-      alert("User Logged In")
+      user.password = password;
+      message.success('Successful login');
       this.context.login(user);
+
+      const url = '/';
+      this.setState({ redirect: url });
     })
     .catch(errorResponse => {
       console.error(errorResponse);
@@ -44,6 +52,11 @@ class LoginForm extends React.Component {
   };
 
   render() {
+
+    if (this.state.redirect) {
+      return <Redirect to={this.state.redirect} />
+    }
+
     return (
       <div className="site-layout-content">
         <div style={{ padding: '2% 25%' }}>
