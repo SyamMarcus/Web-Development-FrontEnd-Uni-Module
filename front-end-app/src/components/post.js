@@ -25,12 +25,8 @@ class Post extends React.Component {
     .then(status)
     .then(json)
     .then(post => {
-      console.log(post)
       this.setState({post:post})
     })
-    .catch(err => {
-      console.log(`Fetch error for post ${id}`)
-    });
   }
 
   render() {

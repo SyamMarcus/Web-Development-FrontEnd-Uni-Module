@@ -28,7 +28,6 @@ class LoginForm extends React.Component {
 
   login(values){
     const {username, password} = values;
-    console.log(`logging in user: ${username}`)
     fetch('http://localhost:3030/TCS/register/login', {
       method: "POST",
       headers: {

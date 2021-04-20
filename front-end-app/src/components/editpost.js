@@ -48,19 +48,14 @@ class RegistrationForm extends React.Component {
     .then(status)
     .then(json)
     .then(post => {
-      console.log(post)
       this.setState({post:post})
     })
-    .catch(err => {
-      console.log(`Fetch error for post ${id}`)
-    });
   }
 
   onFinish = (values) => {
     const username = this.context.user.username;
     const password = this.context.user.password;
     const id = window.location.pathname.split('/')[2];
-    console.log('Received values of form: ', values);
     const { confirm, ...data } = values;
     if(window.confirm('Save Listing Changes?')) {
       fetch(`http://localhost:3030/TCS/listings/${id}`, {
@@ -74,15 +69,11 @@ class RegistrationForm extends React.Component {
       .then(status)
       .then(json)
       .then(data => {
-        console.log(data);
         message.success("Listing Published.");
           
         const url = '/post/' + data.ID;
         this.setState({ redirect: url });
       })
-      .catch(errorResponse => {
-        console.error(errorResponse);
-      });  
     } 
   };
   
@@ -90,7 +81,6 @@ class RegistrationForm extends React.Component {
     const id = window.location.pathname.split('/')[2];
     const username = this.context.user.username;
     const password = this.context.user.password;
-    console.log(username + ":" + password);
     if(window.confirm('Delete Listing?')) {
       fetch(`http://localhost:3030/TCS/listings/${id}` , {
         method: "DELETE",
@@ -101,15 +91,13 @@ class RegistrationForm extends React.Component {
       .then(status)
       .then(json)
       .then(data => {
-        console.log(data);
         message.success('Listing Deleted');
   
         const url = '/';
         this.setState({ redirect: url });
       })
       .catch(err => {
-        console.log(err)
-        message.error('Failed to delete');
+        message.error('Failed to delete listing');
       });   
     }
   }

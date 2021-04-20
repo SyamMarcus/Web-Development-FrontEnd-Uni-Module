@@ -49,7 +49,6 @@ class RegistrationForm extends React.Component {
     fileList.forEach(file => {
       formData.append('upload', file);
     });
-    console.log(formData);
     fetch('http://localhost:3030/TCS/images', {
       method: "POST",
       body: formData,
@@ -61,7 +60,6 @@ class RegistrationForm extends React.Component {
       values.imageURL = response.file.path;
       values.authorID = this.context.user.ID;
 
-      console.log('Form: ', values);
       const { confirm, ...data } = values;
       const username = this.context.user.username;
       const password = this.context.user.password;
@@ -78,23 +76,15 @@ class RegistrationForm extends React.Component {
         .then(status)
         .then(json)
         .then(data => {
-          console.log(data);      
           message.success("Listing Published.");
           
           const url = '/post/' + data.ID;
           this.setState({ redirect: url });
         })
-        
-        .catch(errorResponse => {
-          console.error(errorResponse);
-          alert(`Error: ${errorResponse}`);
-        });  
       };
     })
-    .catch(errorResponse => {
+    .catch(err => {
       message.error('upload failed.');
-      console.error(errorResponse);
-      alert(`Error: ${errorResponse}`);
     });  
   };
 

@@ -34,10 +34,6 @@ class Account extends React.Component {
     .then(posts => {
       this.setState({posts: posts})
     })
-    .catch(err => {
-      // message.error('Failed to find active posts for ' + username);
-      // console.log(`Fetch error for post by authorID: ${id}`)
-    });
   }
 
 

@@ -1,14 +1,17 @@
 /* eslint-disable no-unreachable */
 import React from 'react'; 
 import { withRouter } from 'react-router';
-import { Card, Row, Col, Button, Input, Pagination, Image, message } from 'antd';
+import { Card, Row, Col, Button, Input, Image, message } from 'antd';
 import { Link } from "react-router-dom";
 import { status, json } from '../utilities/requestHandlers';
+import {
+  LeftOutlined,
+  RightOutlined,
+} from '@ant-design/icons';
 
 const { Search } = Input;
 const { Meta } = Card;
 const pageLimit = 4;
-let pageMax = 10;
 let pageNum = 1;
 
 class PostGrid extends React.Component {
@@ -26,70 +29,43 @@ class PostGrid extends React.Component {
     .then(status)
     .then(json)
     .then(postgrid => {
-      console.log(postgrid)
       this.setState({postgrid:postgrid})
     })
-    .catch(err => {
-      console.log(`Fetch error for post`)
-    });
-  }
-
-  update(pageNumber) {
-    console.log(pageNumber);
-    fetch(`http://localhost:3030/TCS/listings/?limit=` + pageLimit + `&page=` + pageNumber)
-    .then(status)
-    .then(json)
-    .then(postgrid => {
-      console.log(this)
-      this.setState({postgrid:postgrid})
-      console.log('test')
-    })
-    .catch(err => {
-      console.log(`Fetch error for post`)
-    });
   }
 
   forward() {
-    if(pageNum < pageMax ) { pageNum ++; }
+    pageNum ++;
     fetch(`http://localhost:3030/TCS/listings/?limit=` + pageLimit + `&page=` + pageNum)
-    .then(status)
     .then(json)
     .then(postgrid => {
-      console.log(postgrid)
       this.setState({postgrid:postgrid})
     })
     .catch(err => {
       pageNum --;
-      console.log(`Fetch error for post`)
     });
   }
 
   back() {
-    if(pageNum > 1 ) { pageNum --; }
+    if(pageNum > 1 ) { 
+      pageNum --; 
+    }
     fetch(`http://localhost:3030/TCS/listings/?limit=` + pageLimit + `&page=` + pageNum)
     .then(status)
     .then(json)
     .then(postgrid => {
-      console.log(postgrid)
       this.setState({postgrid:postgrid})
     })
-    .catch(err => {
-      console.log(`Fetch error for post`)
-    });
   }
 
   onSearch = (value) => {
-    console.log(value);
     fetch(`http://localhost:3030/TCS/listings/search?q=` + value + `&limit=` + pageLimit + `&page=` + pageNum)
     .then(status)
     .then(json)
     .then(postgrid => {
-      console.log(postgrid)
       this.setState({postgrid:postgrid})
     })
     .catch(err => {
       message.error('No listing found matching search!')
-      console.log(`Fetch error for post`)
     });
   }
 
@@ -127,15 +103,11 @@ class PostGrid extends React.Component {
         <Row type="flex" justify="space-around">
           {final}
         </Row> 
-        <Button type="default" htmlType="submit" onClick={()=>this.back()}>     
-          back    
-        </Button> 
-        <p>{pageNum}</p>
-        <Button type="default" htmlType="submit" onClick={()=>this.forward()}>     
-          forward   
-        </Button> 
-        <Pagination defaultCurrent={1} total={20}  />
-
+        <Row justify="center">
+          <Button icon={<LeftOutlined style={{ fontSize: "18px" }}/>} type="default" htmlType="submit" onClick={()=>this.back()}/>     
+            <p style={{ margin: '10px', marginTop: '5px' }}> Page: {pageNum}</p>
+          <Button icon={<RightOutlined style={{ fontSize: "18px" }}/>} type="default" htmlType="submit" onClick={()=>this.forward()}/>     
+        </Row>
       </>
     );
   }

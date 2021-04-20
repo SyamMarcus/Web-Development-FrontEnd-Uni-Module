@@ -62,10 +62,8 @@ class RegistrationForm extends React.Component {
     .then(status)
     .then(json)
     .then(data => {
-      console.log(data);
       values.avatarURL = data.file.path;
       
-      console.log('Form: ', values);
       fetch('http://localhost:3030/TCS/register/search?code=' + values.employeeCode)
       .then(status)
       .then(json)
@@ -91,28 +89,19 @@ class RegistrationForm extends React.Component {
           this.setState({
             fileList: [], 
           });
-          console.log(data);
           message.success('Account Created.');
 
           const url = '/login/';
           this.setState({ redirect: url });
         })
-        .catch(errorResponse => {
-          console.error(errorResponse);
-          alert(`Error: ${errorResponse}`);
+        .catch(err => {
+          message.error('Failed to create account.');
         });  
       })
-  
-      .catch(errorResponse => {
-        console.error(errorResponse);
-        alert(`Error: ${errorResponse}`);
-      });  
     })
 
     .catch(errorResponse => {
-      message.error('upload failed.');
-      console.error(errorResponse);
-      alert(`Error: ${errorResponse}`);
+      message.error('Failed to upload Avatar Image.');
     });  
   };
 
