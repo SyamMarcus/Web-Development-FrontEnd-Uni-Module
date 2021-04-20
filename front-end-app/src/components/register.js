@@ -155,7 +155,7 @@ class RegistrationForm extends React.Component {
 
     return (
       <div className="site-layout-content">
-        <div style={{ padding: '1% 25%' }}>
+        <div style={{ padding: '2% 25%', paddingTop: '0%', }}>
           <PageHeader className="site-page-header"
             title="Register Page"
             subTitle="This is where you can register a new account."/>

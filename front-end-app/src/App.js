@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, message } from 'antd';
+import { Layout, message, } from 'antd';
 import './App.css';
 import UserContext from './contexts/user';
 import {
@@ -78,12 +78,11 @@ class App extends React.Component {
             collapsible collapsed={this.state.collapsed}
             style={{
             color: 'whitesmoke' , 
-            fontSize: '22px',
+            fontSize: '32px',
             textAlign: 'center',
+            position: 'relative',
             overflow: 'auto',
-            width: '50px',
-            height: '100vh',
-            left: 0,}} >
+            height: '120vh',}} >
               {React.createElement(this.state.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
                 className: 'trigger',
                 onClick: this.toggle,
@@ -112,7 +111,7 @@ class App extends React.Component {
                 </Switch>
               </Content>
 
-              <Footer style={{ textAlign: 'center' }}>The Canine Shelter ©2021 Created for 6003CEM</Footer>
+              <Footer style={{ textAlign: 'center' }}>The Canine Shelter ©2021 Created for 6003CEM by Syam Marcus</Footer>
             </Layout>
           </Router>
         </UserContext.Provider>

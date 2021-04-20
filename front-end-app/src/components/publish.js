@@ -49,6 +49,7 @@ class RegistrationForm extends React.Component {
     fileList.forEach(file => {
       formData.append('upload', file);
     });
+    console.log(formData);
     fetch('http://localhost:3030/TCS/images', {
       method: "POST",
       body: formData,
@@ -108,7 +109,7 @@ class RegistrationForm extends React.Component {
     if(user.loggedIn === false) {
       return (
         <div className="site-layout-content">
-          <div style={{ padding: '2% 25%' }}>
+          <div style={{ padding: '2% 25%', paddingTop: '0%', }}>
             <PageHeader className="site-page-header"
               title="Publish Listing"
               subTitle="This is where you can publish a new dog listing."/> 
@@ -118,10 +119,10 @@ class RegistrationForm extends React.Component {
       );
     }
 
-    if (user.role !== 'user') {
+    if (user.role !== 'admin') {
       return (
         <div className="site-layout-content">
-          <div style={{ padding: '2% 25%' }}>
+          <div style={{ padding: '2% 25%', paddingTop: '0%', }}>
             <PageHeader className="site-page-header"
               title="Publish Listing"
               subTitle="This is where you can publish a new dog listing."/> 
@@ -166,7 +167,7 @@ class RegistrationForm extends React.Component {
 
     return (
       <div className="site-layout-content">
-        <div style={{ padding: '2% 25%' }}>
+        <div style={{ padding: '2% 25%', paddingTop: '0%', }}>
           <PageHeader className="site-page-header"
             title="Publish Listing"
             subTitle="This is where you can publish a new dog listing."/>

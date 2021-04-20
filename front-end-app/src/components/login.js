@@ -45,9 +45,8 @@ class LoginForm extends React.Component {
       const url = '/';
       this.setState({ redirect: url });
     })
-    .catch(errorResponse => {
-      console.error(errorResponse);
-      alert(`Error: ${errorResponse}`);
+    .catch(err => {
+      message.error('Failed to login user');
     });  
   };
 
@@ -59,7 +58,7 @@ class LoginForm extends React.Component {
 
     return (
       <div className="site-layout-content">
-        <div style={{ padding: '2% 25%' }}>
+        <div style={{ padding: '2% 25%', paddingTop: '0%', }}>
           <PageHeader className="site-page-header"
             title="Login Page"
             subTitle="This is where you can login."/>

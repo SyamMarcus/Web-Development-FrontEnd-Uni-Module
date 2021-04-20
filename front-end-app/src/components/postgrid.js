@@ -1,7 +1,7 @@
 /* eslint-disable no-unreachable */
 import React from 'react'; 
 import { withRouter } from 'react-router';
-import { Card, Row, Col, Button, Input, Pagination, Image } from 'antd';
+import { Card, Row, Col, Button, Input, Pagination, Image, message } from 'antd';
 import { Link } from "react-router-dom";
 import { status, json } from '../utilities/requestHandlers';
 
@@ -88,6 +88,7 @@ class PostGrid extends React.Component {
       this.setState({postgrid:postgrid})
     })
     .catch(err => {
+      message.error('No listing found matching search!')
       console.log(`Fetch error for post`)
     });
   }
@@ -105,7 +106,7 @@ class PostGrid extends React.Component {
       const image = "http://localhost:3030" + postgrid[i].imageURL
       const postURL = '/post/' + postgrid[i].ID;
         final.push(
-          <Col span={pageLimit}>
+          <Col span={5}>
             <Link to={postURL}>
               <Card cover={<Image alt="Listing Image" fallback={altImage} src={image}/>}>
                 <Meta title={postgrid[i].title} description={postgrid[i].breed} />
@@ -117,10 +118,11 @@ class PostGrid extends React.Component {
 
     return (
       <>
-        <Search placeholder="input search text"
+        <Search placeholder="search for listing title"
             allowClear
             enterButton="Search"
             size="medium"
+            style={{ padding: '2% 25%', paddingTop: '0%'}}
             onSearch={this.onSearch}/>
         <Row type="flex" justify="space-around">
           {final}
@@ -132,7 +134,7 @@ class PostGrid extends React.Component {
         <Button type="default" htmlType="submit" onClick={()=>this.forward()}>     
           forward   
         </Button> 
-        <Pagination defaultCurrent={10} total={20}  />
+        <Pagination defaultCurrent={1} total={20}  />
 
       </>
     );

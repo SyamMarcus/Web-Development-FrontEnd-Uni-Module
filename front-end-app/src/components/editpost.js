@@ -90,16 +90,28 @@ class RegistrationForm extends React.Component {
     const id = window.location.pathname.split('/')[2];
     const username = this.context.user.username;
     const password = this.context.user.password;
-    if(window.confirm('Confirm Deletion?')) {
+    console.log(username + ":" + password);
+    if(window.confirm('Delete Listing?')) {
       fetch(`http://localhost:3030/TCS/listings/${id}` , {
         method: "DELETE",
-        header:{
+        headers: {
           "Authorization": "Basic " + btoa(username + ":" + password),
-          'Accept':'application/json',
-          'Content-Type':'application/json'
         }
       })
-    } 
+      .then(status)
+      .then(json)
+      .then(data => {
+        console.log(data);
+        message.success('Listing Deleted');
+  
+        const url = '/';
+        this.setState({ redirect: url });
+      })
+      .catch(err => {
+        console.log(err)
+        message.error('Failed to delete');
+      });   
+    }
   }
 
   render() {
@@ -116,7 +128,7 @@ class RegistrationForm extends React.Component {
     if (this.context.user.ID === this.state.post.authorID) {
       return (
         <div className="site-layout-content">
-          <div style={{ padding: '2% 25%' }}>
+          <div style={{ padding: '2% 25%', paddingTop: '0%', }}>
             <PageHeader className="site-page-header"
               title="Edit the post below"
               subTitle="This is where you can update this post."/>
@@ -140,11 +152,11 @@ class RegistrationForm extends React.Component {
               <Input.TextArea /> 
             </Form.Item>
           
-            <Form.Item {...tailFormItemLayout}>     
+            <Form.Item {...tailFormItemLayout}>
               <Button type="primary" htmlType="submit" >     
                 Finalize   
               </Button> 
-              <Button type="primary" htmlType="submit" onClick={()=>this.deleteListing()} danger >     
+              <Button type="primary"  style={{ margin: '0 14px' }} onClick={()=>this.deleteListing()} danger >     
                 Delete Listing  
               </Button>  
             </Form.Item >

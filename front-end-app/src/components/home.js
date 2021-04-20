@@ -5,10 +5,10 @@ function Home(props) {
   return (
     <>
       <div className="site-layout-content">
-        <div style={{ padding: '2% 25%' }}>
+        <div style={{ padding: '2% 25%', paddingTop: '0%', }}>
           <PageHeader className="site-page-header"
-            title="The Canine Shelter"
-            subTitle="This is the canine shelter home page."/>
+            title="Home Page"
+            subTitle="All published listings can be viewed here"/>
         </div>  
         <PostGrid />
       </div>
