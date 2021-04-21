@@ -62,7 +62,7 @@ class RegistrationForm extends React.Component {
     .then(status)
     .then(json)
     .then(data => {
-      values.avatarURL = data.file.path;
+      values.avatarURL = "http://localhost:3030" + data.file.path
       
       fetch('http://localhost:3030/TCS/register/search?code=' + values.employeeCode)
       .then(status)

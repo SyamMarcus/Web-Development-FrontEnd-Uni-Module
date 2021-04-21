@@ -106,7 +106,7 @@ class Account extends React.Component {
     var i;
     for (i = 0; i < posts.length; i++) { 
       const altImage = "http://localhost:3030/TCS/images/32886caa-6ab2-41ad-9257-b1602a110ebd"
-      const image = "http://localhost:3030" + posts[i].imageURL
+      const image = posts[i].imageURL
       const url = '/post/' + posts[i].ID;
         final.push(
           <Col span={5} style={{ marginBottom: '40px' }}>
