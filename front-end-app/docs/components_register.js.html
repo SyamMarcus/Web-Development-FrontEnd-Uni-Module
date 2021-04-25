@@ -1,4 +1,32 @@
-import React from 'react';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/register.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/register.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { Row, Col, PageHeader, Form, Input, Button, Upload, message } from 'antd';
 import { status, json } from '../utilities/requestHandlers';
@@ -124,7 +152,7 @@ class RegistrationForm extends React.Component {
   render() {
 
     if (this.state.redirect) {
-      return <Redirect to={this.state.redirect} />
+      return &lt;Redirect to={this.state.redirect} />
     }
 
     const { fileList } = this.state;
@@ -145,7 +173,7 @@ class RegistrationForm extends React.Component {
         if (!isJpgOrPng) {
           return message.error('You can only upload JPG/PNG file!');
         }
-        const isLt2M = file.size / 1024 / 1024 < 2;
+        const isLt2M = file.size / 1024 / 1024 &lt; 2;
         if (!isLt2M) {
           return message.error('Image must smaller than 2MB!');
         }
@@ -159,74 +187,97 @@ class RegistrationForm extends React.Component {
     };
 
     return (
-      <div className="site-layout-content">
-        <div style={{ padding: '2% 25%', paddingTop: '0%', }}>
-          <PageHeader className="site-page-header"
+      &lt;div className="site-layout-content">
+        &lt;div style={{ padding: '2% 25%', paddingTop: '0%', }}>
+          &lt;PageHeader className="site-page-header"
             title="Register Page"
             subTitle="This is where you can register a new account."/>
-        </div>  
-        <Form {...formItemLayout} name="register" onFinish={this.onFinish} scrollToFirstError>
-          <Form.Item style={{ marginBottom: 10 }} label="Employee Code" 
+        &lt;/div>  
+        &lt;Form {...formItemLayout} name="register" onFinish={this.onFinish} scrollToFirstError>
+          &lt;Form.Item style={{ marginBottom: 10 }} label="Employee Code" 
             extra="To create an employee account enter a valid employee account code">
-            <Row gutter={8}>
-              <Col span={6}>
-                <Form.Item
+            &lt;Row gutter={8}>
+              &lt;Col span={6}>
+                &lt;Form.Item
                     name="employeeCode"
                     noStyle
                   >
-                  <Input placeholder="(optional)" />
-                </Form.Item>
-              </Col>
-            </Row>
-          </Form.Item>
+                  &lt;Input placeholder="(optional)" />
+                &lt;/Form.Item>
+              &lt;/Col>
+            &lt;/Row>
+          &lt;/Form.Item>
 
-          <Form.Item name="avatarURL" label="Avatar Image" rules={[{ required: true, message: 'Please upload an image file!' }]}>     
-            <Upload {...props}>
-              <Button icon={<UploadOutlined />}>Select File</Button >
-            </Upload>
-          </Form.Item>
+          &lt;Form.Item name="avatarURL" label="Avatar Image" rules={[{ required: true, message: 'Please upload an image file!' }]}>     
+            &lt;Upload {...props}>
+              &lt;Button icon={&lt;UploadOutlined />}>Select File&lt;/Button >
+            &lt;/Upload>
+          &lt;/Form.Item>
 
-          <Form.Item name="email" label="E-mail" rules={emailRules}>     
-            <Input placeholder="account@mail.com"/>      
-          </Form.Item>
+          &lt;Form.Item name="email" label="E-mail" rules={emailRules}>     
+            &lt;Input placeholder="account@mail.com"/>      
+          &lt;/Form.Item>
 
-          <Form.Item name="userName" label="Username" rules={userNameRules}>      
-            <Input placeholder="Username"/>
-          </Form.Item>
+          &lt;Form.Item name="userName" label="Username" rules={userNameRules}>      
+            &lt;Input placeholder="Username"/>
+          &lt;/Form.Item>
 
-          <Form.Item label="Full Name" style={{ marginBottom: 0 }}>
-            <Form.Item
+          &lt;Form.Item label="Full Name" style={{ marginBottom: 0 }}>
+            &lt;Form.Item
               name="firstName"
               style={{ display: 'inline-block', width: 'calc(40% - 2px)' }}
             >
-              <Input placeholder="First name" />
-            </Form.Item>
-            <Form.Item
+              &lt;Input placeholder="First name" />
+            &lt;/Form.Item>
+            &lt;Form.Item
               name="lastName"
               style={{ display: 'inline-block', width: 'calc(60% - 2px)', margin: '0 2px' }}
             >
-              <Input placeholder="Last name" />
-            </Form.Item>
-          </Form.Item>
+              &lt;Input placeholder="Last name" />
+            &lt;/Form.Item>
+          &lt;/Form.Item>
           
-          <Form.Item name="password" label="Password" hasFeedback rules={passwordRules}>     
-            <Input.Password placeholder="Password"/>     
-          </Form.Item>
+          &lt;Form.Item name="password" label="Password" hasFeedback rules={passwordRules}>     
+            &lt;Input.Password placeholder="Password"/>     
+          &lt;/Form.Item>
         
-          <Form.Item name="confirm" label="Confirm Password" rules={confirmRules}>      
-            <Input.Password placeholder="Confirm Password"/>      
-          </Form.Item>
+          &lt;Form.Item name="confirm" label="Confirm Password" rules={confirmRules}>      
+            &lt;Input.Password placeholder="Confirm Password"/>      
+          &lt;/Form.Item>
         
-          <Form.Item {...tailFormItemLayout}>     
-            <Button type="primary" htmlType="submit" disabled={fileList.length > 1} >     
+          &lt;Form.Item {...tailFormItemLayout}>     
+            &lt;Button type="primary" htmlType="submit" disabled={fileList.length > 1} >     
               Register     
-            </Button>    
-          </Form.Item >
-        </Form>     
-      </div>
+            &lt;/Button>    
+          &lt;/Form.Item >
+        &lt;/Form>     
+      &lt;/div>
     );
   };
 };
 
 
 export default RegistrationForm;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Account.html">Account</a></li><li><a href="App.html">App</a></li><li><a href="LoginForm.html">LoginForm</a></li><li><a href="Nav.html">Nav</a></li><li><a href="Post.html">Post</a></li><li><a href="PostGrid.html">PostGrid</a></li><li><a href="PublicationForm.html">PublicationForm</a></li><li><a href="RegistrationForm.html">RegistrationForm</a></li></ul><h3>Global</h3><ul><li><a href="global.html#Home">Home</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Sat Apr 24 2021 22:04:16 GMT+0000 (Coordinated Universal Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

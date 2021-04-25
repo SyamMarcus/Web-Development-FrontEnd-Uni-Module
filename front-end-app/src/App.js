@@ -25,9 +25,16 @@ import Editpost from './components/editpost';
 
 const { Header, Content, Footer, Sider } = Layout;
 
+/**
+ * React component for hosting the front end components for the app.
+ * @component
+ */
 class App extends React.Component {
   constructor(props) {
     super(props);  
+    /** The state prop stores:
+    * @object user - an object to store user context information from the login page
+    */
     this.state = {
       user: {
         loggedIn: false,
@@ -42,24 +49,37 @@ class App extends React.Component {
     collapsed: false,
   };
 
+  /**
+  * function to toggle the nav bar collapsed state
+  */
   toggle = () => {
     this.setState({
       collapsed: !this.state.collapsed,
     });
   };
 
+  /**
+  * function to set the user context and change the loggedIn property to true
+  */
   login(user) {
     console.log("User is now being set on the context");
     user.loggedIn = true;
     this.setState({user:user});
   }
 
+  /**
+  * function to clear the user context and change the loggedIn property to false
+  */
   logout() {
     console.log("Removing user from the app context");
     this.setState({user: {loggedIn:false}});
     message.info('Logged out!');
   }
 
+  /**
+  * function to render the component in JSX
+  * @return JSX code to display UI
+  */
   render() {
     
     const context = {

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/login.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/login.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React from 'react';
+import { Redirect } from 'react-router-dom';
+import { Space, PageHeader, Form, Input, Button, message } from 'antd';
+import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import UserContext from '../contexts/user';
+import { status, json } from '../utilities/requestHandlers';
+
+
+const formItemLayout = {
+  labelCol: { xs: { span: 24 }, sm: { span: 6 } },
+  wrapperCol: { xs: { span: 24 }, sm: { span: 12 } }
+};
+
+const tailFormItemLayout = {
+  wrapperCol: { xs: { span: 24, offset: 0 }, sm: { span: 16, offset: 6 } },
+};
+
+
+/**
+ * React component for showing a Login form.
+ * @component
+ */
+class LoginForm extends React.Component {
+  constructor(props) {
+    super(props);
+    /** The state prop stores:
+     * @string redirect - a link to redirect to when rendering
+     */
+    this.state = {
+      redirect: null,
+    }
+    this.login = this.login.bind(this);
+  }
+  
+  static contextType = UserContext;
+
+  /**
+  * function to POST a HTTP request to login the user
+  * @param {object} values the login information from the antd Form  
+  */
+  login(values){
+    const {username, password} = values;
+    fetch('http://localhost:3030/TCS/register/login', {
+      method: "POST",
+      headers: {
+        "Authorization": "Basic " + btoa(username + ":" + password)
+      }
+    })
+    .then(status)
+    .then(json)
+    .then(user => {
+      user.password = password;
+      message.success('Successful login');
+      this.context.login(user);
+
+      const url = '/';
+      this.setState({ redirect: url });
+    })
+    .catch(err => {
+      message.error('Failed to login user');
+    });  
+  };
+
+  /**
+  * function to render the component in JSX
+  * @return JSX code to display UI
+  */
+  render() {
+
+    if (this.state.redirect) {
+      return &lt;Redirect to={this.state.redirect} />
+    }
+
+    return (
+      &lt;div className="site-layout-content">
+        &lt;div style={{ padding: '2% 25%', paddingTop: '0%', }}>
+          &lt;PageHeader className="site-page-header"
+            title="Login Page"
+            subTitle="This is where you can login."/>
+        &lt;/div>  
+    
+        &lt;Form {...formItemLayout}
+          name="normal_login"
+          className="login-form"
+          scrollToFirstError
+          initialValues={{ remember: true }}
+          onFinish={this.login}
+        >
+          &lt;Form.Item 
+            name="username"
+            label="Username"
+            rules={[{ required: true, message: 'Please input your Username!' }]}
+          >
+            &lt;Input prefix={&lt;UserOutlined className="site-form-item-icon" />} placeholder="Username" />
+          &lt;/Form.Item>
+          &lt;Form.Item
+            name="password"
+            label="Password"
+            rules={[{ required: true, message: 'Please input your Password!' }]}
+          >
+            &lt;Input
+              prefix={&lt;LockOutlined className="site-form-item-icon" />}
+              type="password"
+              placeholder="Password"
+            />
+          &lt;/Form.Item>
+          
+          &lt;Form.Item {...tailFormItemLayout}>
+          &lt;Space size={'small'}>
+            &lt;Button type="primary" htmlType="submit" className="login-form-button">
+              Log in 
+            &lt;/Button>
+            &lt;Space size={'small'}>
+              Or &lt;a href="/register">register now!&lt;/a>
+            &lt;/Space>
+          &lt;/Space>
+          &lt;/Form.Item>
+        &lt;/Form>
+      &lt;/div>
+    );
+  };
+};
+
+export default LoginForm;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Account.html">Account</a></li><li><a href="App.html">App</a></li><li><a href="LoginForm.html">LoginForm</a></li><li><a href="Nav.html">Nav</a></li><li><a href="Post.html">Post</a></li><li><a href="PostGrid.html">PostGrid</a></li><li><a href="PublicationForm.html">PublicationForm</a></li><li><a href="RegistrationForm.html">RegistrationForm</a></li></ul><h3>Global</h3><ul><li><a href="global.html#Home">Home</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Sat Apr 24 2021 22:04:16 GMT+0000 (Coordinated Universal Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -7,10 +7,17 @@ import { status, json } from '../utilities/requestHandlers';
 
 const { Title, Paragraph, Text } = Typography;
 
+/**
+ * React component for showing a posted listing.
+ * @component
+ */
 class Post extends React.Component {
 
   constructor(props) {
     super(props);
+    /** The state prop stores:
+    * @object post - an object to store post information
+    */
     this.state = {
       post: undefined
     }
@@ -18,6 +25,9 @@ class Post extends React.Component {
 
   static contextType = UserContext;
 
+  /**
+  * function to GET a HTTP request for the current post when component is exported
+  */
   componentDidMount() {
     const id = this.props.match.params.id;
 
@@ -29,6 +39,10 @@ class Post extends React.Component {
     })
   }
 
+  /**
+  * function to render the home page export in JSX
+  * @return JSX code to display UI
+  */
   render() {
 
     if (!this.state.post) {
@@ -58,7 +72,7 @@ class Post extends React.Component {
               <Image width={300} alt="Listing Image" fallback={altImage} src={image} />
             </Col>
             <Col span={14}>
-                <Title level={2}>{post.title}: </Title>
+                <Title level={2}>{post.title} </Title>
                 <Paragraph><Text strong >Dog Breed: </Text><Text>{post.breed}</Text></Paragraph>
                 <Paragraph><Text strong >Summary: </Text><Text>{post.summary}</Text></Paragraph>
                 <Paragraph><Text strong >Date Created: </Text><Text>{post.dateCreated}</Text></Paragraph>

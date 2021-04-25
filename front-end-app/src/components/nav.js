@@ -6,19 +6,34 @@ import { MailOutlined, HomeOutlined, UserOutlined } from '@ant-design/icons';
 
 const { SubMenu } = Menu;
 
+
+/**
+ * React component for the SPA navigation bar
+ * @component
+ */
 class Nav extends React.Component {
+  /** The state stores:
+  * @boolean collapsed - stores info of the antd nav bar collapsed state
+  */
   state = {
     collapsed: false,
   };
 
   static contextType = UserContext;
 
+  /**
+  * function to toggle the nav bar collapsed state
+  */
   toggleCollapsed = () => {
     this.setState({
       collapsed: !this.state.collapsed,
     });
   };
 
+  /**
+  * function to render the home page export in JSX
+  * @return JSX code to display UI
+  */
   render() {
 
     const user = this.context.user;

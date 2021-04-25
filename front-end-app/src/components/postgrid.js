@@ -14,16 +14,25 @@ const { Meta } = Card;
 const pageLimit = 4;
 let pageNum = 1;
 
+/**
+ * React component for showing a grid of posted listing.
+ * @component
+ */
 class PostGrid extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
+      /** The state prop stores:
+      * @array postgrid - an array of post objects
+      */
       postgrid: undefined
     }
   }
 
-
+  /**
+  * function to GET a HTTP request for paginated posts to be set in the postgrid when component is exported
+  */
   componentDidMount() {
     fetch(`http://localhost:3030/TCS/listings/?limit=` + pageLimit + `&page=` + pageNum)
     .then(status)
@@ -33,6 +42,9 @@ class PostGrid extends React.Component {
     })
   }
 
+  /**
+  * function to GET a HTTP request for paginated posts to be set in the postgrid when the current page is increased
+  */
   forward() {
     pageNum ++;
     fetch(`http://localhost:3030/TCS/listings/?limit=` + pageLimit + `&page=` + pageNum)
@@ -45,6 +57,9 @@ class PostGrid extends React.Component {
     });
   }
 
+  /**
+  * function to GET a HTTP request for paginated posts to be set in the postgrid when the current page is decreased
+  */
   back() {
     if(pageNum > 1 ) { 
       pageNum --; 
@@ -57,6 +72,10 @@ class PostGrid extends React.Component {
     })
   }
 
+  /**
+  * function to GET a HTTP request for searched for posts to be set in the postgrid when the a search query is passed
+  * @param {string} value the search query from the antd input object
+  */
   onSearch = (value) => {
     fetch(`http://localhost:3030/TCS/listings/search?q=` + value + `&limit=` + pageLimit + `&page=` + pageNum)
     .then(status)
@@ -69,6 +88,10 @@ class PostGrid extends React.Component {
     });
   }
 
+  /**
+  * function to render the home page export in JSX
+  * @return JSX code to display UI
+  */
   render() {
     if (!this.state.postgrid) {
       return <h3>Loading posts...</h3>
@@ -94,20 +117,20 @@ class PostGrid extends React.Component {
 
     return (
       <>
-        <Search placeholder="search for listing title"
+        <Row justify="center" style={{ padding: '2%', paddingTop: '1%'}}> 
+          <Search placeholder="search for listing title"
             allowClear
             enterButton="Search"
             size="medium"
             style={{ padding: '2% 25%', paddingTop: '0%'}}
             onSearch={this.onSearch}/>
+          <Button icon={<LeftOutlined style={{ fontSize: "18px" }}/>} type="default" htmlType="submit" onClick={()=>this.back()}/>     
+            <p style={{ margin: '10px', marginTop: '5px' }}> Page: {pageNum}</p>
+          <Button icon={<RightOutlined style={{ fontSize: "18px" }}/>} type="default" htmlType="submit" onClick={()=>this.forward()}/>    
+        </Row>
         <Row type="flex" justify="space-around">
           {final}
         </Row> 
-        <Row justify="center">
-          <Button icon={<LeftOutlined style={{ fontSize: "18px" }}/>} type="default" htmlType="submit" onClick={()=>this.back()}/>     
-            <p style={{ margin: '10px', marginTop: '5px' }}> Page: {pageNum}</p>
-          <Button icon={<RightOutlined style={{ fontSize: "18px" }}/>} type="default" htmlType="submit" onClick={()=>this.forward()}/>     
-        </Row>
       </>
     );
   }

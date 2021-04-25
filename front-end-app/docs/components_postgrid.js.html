@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/postgrid.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/postgrid.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/* eslint-disable no-unreachable */
+import React from 'react'; 
+import { withRouter } from 'react-router';
+import { Card, Row, Col, Button, Input, Image, message } from 'antd';
+import { Link } from "react-router-dom";
+import { status, json } from '../utilities/requestHandlers';
+import {
+  LeftOutlined,
+  RightOutlined,
+} from '@ant-design/icons';
+
+const { Search } = Input;
+const { Meta } = Card;
+const pageLimit = 4;
+let pageNum = 1;
+
+/**
+ * React component for showing a grid of posted listing.
+ * @component
+ */
+class PostGrid extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      /** The state prop stores:
+      * @array postgrid - an array of post objects
+      */
+      postgrid: undefined
+    }
+  }
+
+  /**
+  * function to GET a HTTP request for paginated posts to be set in the postgrid when component is exported
+  */
+  componentDidMount() {
+    fetch(`http://localhost:3030/TCS/listings/?limit=` + pageLimit + `&amp;page=` + pageNum)
+    .then(status)
+    .then(json)
+    .then(postgrid => {
+      this.setState({postgrid:postgrid})
+    })
+  }
+
+  /**
+  * function to GET a HTTP request for paginated posts to be set in the postgrid when the current page is increased
+  */
+  forward() {
+    pageNum ++;
+    fetch(`http://localhost:3030/TCS/listings/?limit=` + pageLimit + `&amp;page=` + pageNum)
+    .then(json)
+    .then(postgrid => {
+      this.setState({postgrid:postgrid})
+    })
+    .catch(err => {
+      pageNum --;
+    });
+  }
+
+  /**
+  * function to GET a HTTP request for paginated posts to be set in the postgrid when the current page is decreased
+  */
+  back() {
+    if(pageNum > 1 ) { 
+      pageNum --; 
+    }
+    fetch(`http://localhost:3030/TCS/listings/?limit=` + pageLimit + `&amp;page=` + pageNum)
+    .then(status)
+    .then(json)
+    .then(postgrid => {
+      this.setState({postgrid:postgrid})
+    })
+  }
+
+  /**
+  * function to GET a HTTP request for searched for posts to be set in the postgrid when the a search query is passed
+  * @param {string} value the search query from the antd input object
+  */
+  onSearch = (value) => {
+    fetch(`http://localhost:3030/TCS/listings/search?q=` + value + `&amp;limit=` + pageLimit + `&amp;page=` + pageNum)
+    .then(status)
+    .then(json)
+    .then(postgrid => {
+      this.setState({postgrid:postgrid})
+    })
+    .catch(err => {
+      message.error('No listing found matching search!')
+    });
+  }
+
+  /**
+  * function to render the home page export in JSX
+  * @return JSX code to display UI
+  */
+  render() {
+    if (!this.state.postgrid) {
+      return &lt;h3>Loading posts...&lt;/h3>
+    }
+    const postgrid = this.state.postgrid;
+    const final = [];
+
+    var i;
+    for (i = 0; i &lt; postgrid.length; i++) { 
+      const altImage = "http://localhost:3030/TCS/images/32886caa-6ab2-41ad-9257-b1602a110ebd"
+      const image = postgrid[i].imageURL
+      const postURL = '/post/' + postgrid[i].ID;
+        final.push(
+          &lt;Col span={5}>
+            &lt;Link to={postURL}>
+              &lt;Card cover={&lt;Image alt="Listing Image" fallback={altImage} src={image}/>}>
+                &lt;Meta title={postgrid[i].title} description={postgrid[i].breed} />
+              &lt;/Card>
+            &lt;/Link>
+          &lt;/Col>
+        );
+      }
+
+    return (
+      &lt;>
+        &lt;Search placeholder="search for listing title"
+            allowClear
+            enterButton="Search"
+            size="medium"
+            style={{ padding: '2% 25%', paddingTop: '0%'}}
+            onSearch={this.onSearch}/>
+        &lt;Row type="flex" justify="space-around">
+          {final}
+        &lt;/Row> 
+        &lt;Row justify="center">
+          &lt;Button icon={&lt;LeftOutlined style={{ fontSize: "18px" }}/>} type="default" htmlType="submit" onClick={()=>this.back()}/>     
+            &lt;p style={{ margin: '10px', marginTop: '5px' }}> Page: {pageNum}&lt;/p>
+          &lt;Button icon={&lt;RightOutlined style={{ fontSize: "18px" }}/>} type="default" htmlType="submit" onClick={()=>this.forward()}/>     
+        &lt;/Row>
+      &lt;/>
+    );
+  }
+}
+
+export default withRouter(PostGrid);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Account.html">Account</a></li><li><a href="App.html">App</a></li><li><a href="LoginForm.html">LoginForm</a></li><li><a href="Nav.html">Nav</a></li><li><a href="Post.html">Post</a></li><li><a href="PostGrid.html">PostGrid</a></li><li><a href="PublicationForm.html">PublicationForm</a></li><li><a href="RegistrationForm.html">RegistrationForm</a></li></ul><h3>Global</h3><ul><li><a href="global.html#Home">Home</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Sat Apr 24 2021 22:04:16 GMT+0000 (Coordinated Universal Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

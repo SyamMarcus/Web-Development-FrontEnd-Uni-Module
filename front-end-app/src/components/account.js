@@ -9,10 +9,16 @@ const { Title, Paragraph, Text } = Typography;
 
 const { Meta } = Card;
 
-
+/**
+ * React component for showing a Account details.
+ * @component
+ */
 class Account extends React.Component {
   constructor(props) {
     super(props);
+    /** The state prop stores:
+     * @object posts - an array of objects to store posts
+     */
     this.state = {
       posts: undefined,
     }
@@ -20,6 +26,9 @@ class Account extends React.Component {
 
   static contextType = UserContext;
 
+  /**
+  * function to GET a HTTP request for all user account posts when component is exported
+  */
   componentDidMount() {
     const username = this.context.user.username;
     const password = this.context.user.password;
@@ -36,8 +45,11 @@ class Account extends React.Component {
     })
   }
 
-
- render() {
+  /**
+  * function to render the component in JSX
+  * @return JSX code to display UI
+  */
+  render() {
   
   const user = this.context.user;
   if(user.loggedIn === false) {

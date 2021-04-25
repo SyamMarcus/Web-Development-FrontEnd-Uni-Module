@@ -1,15 +1,13 @@
-import { PageHeader } from 'antd';
 import PostGrid from './postgrid';
 
-function Home(props) {
+/**
+* function to render the home page export in JSX
+* @return JSX code to display UI
+*/
+function Home() {
   return (
     <>
       <div className="site-layout-content">
-        <div style={{ padding: '2% 25%', paddingTop: '0%', }}>
-          <PageHeader className="site-page-header"
-            title="Home Page"
-            subTitle="All published listings can be viewed here"/>
-        </div>  
         <PostGrid />
       </div>
     </>  
