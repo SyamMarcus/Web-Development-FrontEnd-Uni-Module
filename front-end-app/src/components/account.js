@@ -80,7 +80,7 @@ class Account extends React.Component {
   user.dateRegistered = user.dateRegistered.split("T")[0];
 
   const altImage = "http://localhost:3030/TCS/images/32886caa-6ab2-41ad-9257-b1602a110ebd"
-  const image = "http://localhost:3030" + user.avatarURL
+  const image = user.avatarURL
 
   if (!this.state.posts) {
     return (
