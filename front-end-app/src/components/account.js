@@ -1,4 +1,5 @@
 import React from 'react';
+import url from '../config';
 import { Link } from "react-router-dom";
 import { Card, PageHeader, Row, Col, Image, Typography} from 'antd';
 import { status, json } from '../utilities/requestHandlers';
@@ -33,7 +34,7 @@ class Account extends React.Component {
     const username = this.context.user.username;
     const password = this.context.user.password;
     // const id = this.context.user.ID;
-    fetch(`http://localhost:3030/TCS/listings/account`, {
+    fetch( url + `/TCS/listings/account`, {
       headers: {
         "Authorization": "Basic " + btoa(username + ":" + password),
       }
@@ -79,7 +80,7 @@ class Account extends React.Component {
   }
   user.dateRegistered = user.dateRegistered.split("T")[0];
 
-  const altImage = "http://localhost:3030/TCS/images/32886caa-6ab2-41ad-9257-b1602a110ebd"
+  const altImage =  url + "/TCS/images/32886caa-6ab2-41ad-9257-b1602a110ebd"
   const image = user.avatarURL
 
   if (!this.state.posts) {
@@ -117,12 +118,12 @@ class Account extends React.Component {
     const final = [];
     var i;
     for (i = 0; i < posts.length; i++) { 
-      const altImage = "http://localhost:3030/TCS/images/32886caa-6ab2-41ad-9257-b1602a110ebd"
+      const altImage =  url + "/TCS/images/32886caa-6ab2-41ad-9257-b1602a110ebd"
       const image = posts[i].imageURL
-      const url = '/post/' + posts[i].ID;
+      const imageUrl = '/post/' + posts[i].ID;
         final.push(
           <Col span={5} style={{ marginBottom: '40px' }}>
-            <Link to={url}>
+            <Link to={imageUrl}>
               <Card cover={<Image alt="Listing Image" fallback={altImage} src={image}/>}>
                 <Meta title={posts[i].title} description={posts[i].breed} />
               </Card>

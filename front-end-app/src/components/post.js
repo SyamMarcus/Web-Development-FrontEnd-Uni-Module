@@ -1,4 +1,5 @@
 import React from 'react'; 
+import url from '../config';
 import { withRouter } from 'react-router';
 import { Link } from "react-router-dom";
 import { Image, Row, Col, Typography, Button } from 'antd'
@@ -31,7 +32,7 @@ class Post extends React.Component {
   componentDidMount() {
     const id = this.props.match.params.id;
 
-    fetch(`http://localhost:3030/TCS/listings/${id}`)
+    fetch( url + `/TCS/listings/${id}`)
     .then(status)
     .then(json)
     .then(post => {
@@ -51,7 +52,7 @@ class Post extends React.Component {
 
     const user = this.context.user;
     const post = this.state.post;
-    const altImage = "http://localhost:3030/TCS/images/32886caa-6ab2-41ad-9257-b1602a110ebd"
+    const altImage =  url + "/TCS/images/32886caa-6ab2-41ad-9257-b1602a110ebd"
     const image = post.imageURL
     post.dateCreated = post.dateCreated.split("T")[0];
 

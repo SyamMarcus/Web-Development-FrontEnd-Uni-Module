@@ -1,5 +1,6 @@
 /* eslint-disable no-unreachable */
 import React from 'react'; 
+import url from '../config';
 import { withRouter } from 'react-router';
 import { Card, Row, Col, Button, Input, Image, message } from 'antd';
 import { Link } from "react-router-dom";
@@ -19,7 +20,6 @@ let pageNum = 1;
  * @component
  */
 class PostGrid extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -34,7 +34,8 @@ class PostGrid extends React.Component {
   * function to GET a HTTP request for paginated posts to be set in the postgrid when component is exported
   */
   componentDidMount() {
-    fetch(`http://localhost:3030/TCS/listings/?limit=` + pageLimit + `&page=` + pageNum)
+    console.log(url)
+    fetch( url + `/TCS/listings/?limit=` + pageLimit + `&page=` + pageNum)
     .then(status)
     .then(json)
     .then(postgrid => {
@@ -47,7 +48,7 @@ class PostGrid extends React.Component {
   */
   forward() {
     pageNum ++;
-    fetch(`http://localhost:3030/TCS/listings/?limit=` + pageLimit + `&page=` + pageNum)
+    fetch( url + `/TCS/listings/?limit=` + pageLimit + `&page=` + pageNum)
     .then(json)
     .then(postgrid => {
       this.setState({postgrid:postgrid})
@@ -64,7 +65,7 @@ class PostGrid extends React.Component {
     if(pageNum > 1 ) { 
       pageNum --; 
     }
-    fetch(`http://localhost:3030/TCS/listings/?limit=` + pageLimit + `&page=` + pageNum)
+    fetch( url + `/TCS/listings/?limit=` + pageLimit + `&page=` + pageNum)
     .then(status)
     .then(json)
     .then(postgrid => {
@@ -77,7 +78,7 @@ class PostGrid extends React.Component {
   * @param {string} value the search query from the antd input object
   */
   onSearch = (value) => {
-    fetch(`http://localhost:3030/TCS/listings/search?q=` + value + `&limit=` + pageLimit + `&page=` + pageNum)
+    fetch( url + `/TCS/listings/search?q=` + value + `&limit=` + pageLimit + `&page=` + pageNum)
     .then(status)
     .then(json)
     .then(postgrid => {
@@ -101,7 +102,7 @@ class PostGrid extends React.Component {
 
     var i;
     for (i = 0; i < postgrid.length; i++) { 
-      const altImage = "http://localhost:3030/TCS/images/32886caa-6ab2-41ad-9257-b1602a110ebd"
+      const altImage = url + "/TCS/images/32886caa-6ab2-41ad-9257-b1602a110ebd"
       const image = postgrid[i].imageURL
       const postURL = '/post/' + postgrid[i].ID;
         final.push(

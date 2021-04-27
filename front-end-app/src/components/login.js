@@ -1,4 +1,5 @@
 import React from 'react';
+import url from '../config';
 import { Redirect } from 'react-router-dom';
 import { Space, PageHeader, Form, Input, Button, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
@@ -40,7 +41,7 @@ class LoginForm extends React.Component {
   */
   login(values){
     const {username, password} = values;
-    fetch('http://localhost:3030/TCS/register/login', {
+    fetch( url + '/TCS/register/login', {
       method: "POST",
       headers: {
         "Authorization": "Basic " + btoa(username + ":" + password)

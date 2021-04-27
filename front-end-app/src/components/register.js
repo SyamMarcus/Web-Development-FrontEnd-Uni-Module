@@ -1,4 +1,5 @@
 import React from 'react';
+import url from '../config';
 import { Redirect } from 'react-router-dom';
 import { Row, Col, PageHeader, Form, Input, Button, Upload, message } from 'antd';
 import { status, json } from '../utilities/requestHandlers';
@@ -67,16 +68,16 @@ class RegistrationForm extends React.Component {
     fileList.forEach(file => {
       formData.append('upload', file);
     });
-    fetch('http://localhost:3030/TCS/images', {
+    fetch( url + '/TCS/images', {
       method: "POST",
       body: formData,
     })
     .then(status)
     .then(json)
     .then(data => {
-      values.avatarURL = "http://localhost:3030" + data.file.path
+      values.avatarURL = url + data.file.path
       
-      fetch('http://localhost:3030/TCS/register/search?code=' + values.employeeCode)
+      fetch( url + '/TCS/register/search?code=' + values.employeeCode)
       .then(status)
       .then(json)
       .then(code => {
@@ -88,7 +89,7 @@ class RegistrationForm extends React.Component {
         }
         delete values.employeeCode;
         const { confirm, ...data } = values;
-        return fetch('http://localhost:3030/TCS/register/', {
+        return fetch( url + '/TCS/register/', {
           method: "POST",
           body: JSON.stringify(data),
           headers: {

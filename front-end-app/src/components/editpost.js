@@ -1,4 +1,5 @@
 import React from 'react';
+import url from '../config';
 import { Redirect } from 'react-router-dom';
 import { PageHeader, Form, Input, Button, Upload, message, Image, Space, Row, Col } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
@@ -61,7 +62,7 @@ class RegistrationForm extends React.Component {
   */
   componentDidMount() {
     const id = window.location.pathname.split('/')[2];
-    fetch(`http://localhost:3030/TCS/listings/${id}`)
+    fetch( url + `/TCS/listings/${id}`)
     .then(status)
     .then(json)
     .then(post => {
@@ -84,7 +85,7 @@ class RegistrationForm extends React.Component {
       fileList.forEach(file => {
         formData.append('upload', file);
       });
-      fetch('http://localhost:3030/TCS/images', {
+      fetch( url + '/TCS/images', {
         method: "POST",
         body: formData,
       })
@@ -92,7 +93,7 @@ class RegistrationForm extends React.Component {
       .then(json)
       .then(response => {
               
-        values.imageURL = "http://localhost:3030" + response.file.path;
+        values.imageURL = url + response.file.path;
         values.authorID = this.context.user.ID;
   
         console.log('Form: ', values);
@@ -101,7 +102,7 @@ class RegistrationForm extends React.Component {
         const password = this.context.user.password;
         const id = window.location.pathname.split('/')[2];
         if(window.confirm('Save Listing Changes?')) {
-          fetch(`http://localhost:3030/TCS/listings/${id}`, {
+          fetch( url + `/TCS/listings/${id}`, {
             method: "PUT",
             body: JSON.stringify(data),
             headers: {
@@ -134,7 +135,7 @@ class RegistrationForm extends React.Component {
       const password = this.context.user.password;
       const id = window.location.pathname.split('/')[2];
       if(window.confirm('Save Listing Changes?')) {
-        fetch(`http://localhost:3030/TCS/listings/${id}`, {
+        fetch( url + `/TCS/listings/${id}`, {
           method: "PUT",
           body: JSON.stringify(data),
           headers: {
@@ -189,7 +190,7 @@ class RegistrationForm extends React.Component {
     const username = this.context.user.username;
     const password = this.context.user.password;
     if(window.confirm('Delete Listing?')) {
-      fetch(`http://localhost:3030/TCS/listings/${id}` , {
+      fetch( url + `/TCS/listings/${id}` , {
         method: "DELETE",
         headers: {
           "Authorization": "Basic " + btoa(username + ":" + password),

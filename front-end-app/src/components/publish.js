@@ -1,4 +1,5 @@
 import React from 'react';
+import url from '../config';
 import { Redirect } from 'react-router-dom';
 import { PageHeader, Form, Input, Button, Upload, message, Image, Space, Row, Col } from 'antd';
 import { status, json } from '../utilities/requestHandlers';
@@ -66,7 +67,7 @@ class PublicationForm extends React.Component {
       fileList.forEach(file => {
         formData.append('upload', file);
       });
-      fetch('http://localhost:3030/TCS/images', {
+      fetch( url + '/TCS/images', {
         method: "POST",
         body: formData,
       })
@@ -74,7 +75,7 @@ class PublicationForm extends React.Component {
       .then(json)
       .then(response => {
               
-        values.imageURL = "http://localhost:3030" + response.file.path;
+        values.imageURL = url + response.file.path;
         values.authorID = this.context.user.ID;
   
         console.log('Form: ', values);
@@ -82,7 +83,7 @@ class PublicationForm extends React.Component {
         const username = this.context.user.username;
         const password = this.context.user.password;
         if(window.confirm('Confirm Creation?')) {
-          fetch('http://localhost:3030/TCS/listings', {
+          fetch( url + '/TCS/listings', {
             method: "POST",
             body: JSON.stringify(data),
             headers: {
@@ -121,7 +122,7 @@ class PublicationForm extends React.Component {
       const username = this.context.user.username;
       const password = this.context.user.password;
       if(window.confirm('Confirm Creation?')) {
-        fetch('http://localhost:3030/TCS/listings', {
+        fetch( url + '/TCS/listings', {
           method: "POST",
           body: JSON.stringify(data),
           headers: {
